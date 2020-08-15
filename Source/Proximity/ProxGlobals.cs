@@ -9,9 +9,9 @@ namespace Proximity
 	internal class ProxGlobals
 	{
 		// Token: 0x06000003 RID: 3 RVA: 0x00002418 File Offset: 0x00000618
-		internal static int extendTicks()
+		internal static int ExtendTicks()
 		{
-			int num = ProxGlobals.ProxSecondTick;
+			int num = ProxSecondTick;
 			num = ((num < 2) ? 2 : num);
 			int num2 = num * 15;
 			num2 = ((num2 > 120) ? 120 : num2);
@@ -23,13 +23,13 @@ namespace Proximity
 		{
 			if (!pawn.RaceProps.IsMechanoid)
 			{
-				string text = (ProximityGet.GetProxHediff(thing.def) != null) ? ProximityGet.GetProxHediff(thing.def) : "";
+				string text = ProximityGet.GetProxHediff(thing.def) ?? "";
 				float proxHediffSev = ProximityGet.GetProxHediffSev(thing.def);
 				int proxRange = ProximityGet.GetProxRange(thing.def);
-				if (proxHediffSev != 0f && text != "" && ProxGlobals.NearThingInRange(thing, pawn, proxRange))
+				if (proxHediffSev != 0f && text != "" && NearThingInRange(thing, pawn, proxRange))
 				{
 					HediffDef named = DefDatabase<HediffDef>.GetNamed(text, false);
-					if (named != null && !ProxGlobals.ProxImmuneTo(pawn, named))
+					if (named != null && !ProxImmuneTo(pawn, named))
 					{
 						Pawn_HealthTracker health = pawn.health;
 						Hediff hediff;
@@ -40,7 +40,7 @@ namespace Proximity
 						else
 						{
 							HediffSet hediffSet = health.hediffSet;
-							hediff = ((hediffSet != null) ? hediffSet.GetFirstHediffOfDef(named, false) : null);
+							hediff = (hediffSet?.GetFirstHediffOfDef(named, false));
 						}
 						Hediff hediff2 = hediff;
 						if (hediff2 != null)
@@ -61,13 +61,13 @@ namespace Proximity
 		{
 			if (!pawn.RaceProps.IsMechanoid)
 			{
-				string text = (ProximityGet.GetTProxHediff(terrain) != null) ? ProximityGet.GetTProxHediff(terrain) : "";
+				string text = ProximityGet.GetTProxHediff(terrain) ?? "";
 				float tproxHediffSev = ProximityGet.GetTProxHediffSev(terrain);
 				int tproxRange = ProximityGet.GetTProxRange(terrain);
-				if (tproxHediffSev != 0f && text != "" && ProxGlobals.TerrainInRange(terrain, terrainPosition, pawn, tproxRange))
+				if (tproxHediffSev != 0f && text != "" && TerrainInRange(terrain, terrainPosition, pawn, tproxRange))
 				{
 					HediffDef named = DefDatabase<HediffDef>.GetNamed(text, false);
-					if (named != null && !ProxGlobals.ProxImmuneTo(pawn, named))
+					if (named != null && !ProxImmuneTo(pawn, named))
 					{
 						Pawn_HealthTracker health = pawn.health;
 						Hediff hediff;
@@ -78,7 +78,7 @@ namespace Proximity
 						else
 						{
 							HediffSet hediffSet = health.hediffSet;
-							hediff = ((hediffSet != null) ? hediffSet.GetFirstHediffOfDef(named, false) : null);
+							hediff = (hediffSet?.GetFirstHediffOfDef(named, false));
 						}
 						Hediff hediff2 = hediff;
 						if (hediff2 != null)
@@ -122,9 +122,9 @@ namespace Proximity
 			{
 				EffRange = 0;
 			}
-			if (EffRange > ProxGlobals.closeRange)
+			if (EffRange > closeRange)
 			{
-				EffRange = ProxGlobals.closeRange;
+				EffRange = closeRange;
 			}
 			return thing.Position.InHorDistOf(pawn.Position, (float)EffRange);
 		}
@@ -136,9 +136,9 @@ namespace Proximity
 			{
 				EffRange = 0;
 			}
-			if (EffRange > ProxGlobals.closeRange)
+			if (EffRange > closeRange)
 			{
-				EffRange = ProxGlobals.closeRange;
+				EffRange = closeRange;
 			}
 			return terrainPosition.InHorDistOf(pawn.Position, (float)EffRange);
 		}
@@ -191,8 +191,8 @@ namespace Proximity
 			ThingDef def = thing.def;
 			if (ProximityGet.GetProxRoomOnly(def))
 			{
-				Room room = (thing != null) ? thing.Position.GetRoom(thing.Map, RegionType.Set_Passable) : null;
-				Room room2 = (pawn != null) ? pawn.Position.GetRoom(thing.Map, RegionType.Set_Passable) : null;
+				Room room = thing?.Position.GetRoom(thing.Map, RegionType.Set_Passable);
+				Room room2 = pawn?.Position.GetRoom(thing.Map, RegionType.Set_Passable);
 				if (room != null && room2 != null && room != room2)
 				{
 					return false;
@@ -217,7 +217,7 @@ namespace Proximity
 					return false;
 				}
 			}
-			return (!pawn.RaceProps.IsMechanoid || ProximityGet.GetProxMechanoid(def)) && (!(pawn.RaceProps.FleshType.defName == "Insectoid") || ProximityGet.GetProxInsectoid(def)) && (!pawn.AnimalOrWildMan() || ProximityGet.GetProxAnimal(def)) && (!pawn.IsPrisoner || ProximityGet.GetProxPrisoner(def)) && (pawn.Faction == thing.Faction || ProxGlobals.GetEffectsOutsider(thing, pawn)) && (ProximityGet.GetProxEquipped(def) == null || ProxGlobals.GetPawnHasEquipment(thing, pawn));
+			return (!pawn.RaceProps.IsMechanoid || ProximityGet.GetProxMechanoid(def)) && (!(pawn.RaceProps.FleshType.defName == "Insectoid") || ProximityGet.GetProxInsectoid(def)) && (!pawn.AnimalOrWildMan() || ProximityGet.GetProxAnimal(def)) && (!pawn.IsPrisoner || ProximityGet.GetProxPrisoner(def)) && (pawn.Faction == thing.Faction || GetEffectsOutsider(thing, pawn)) && (ProximityGet.GetProxEquipped(def) == null || GetPawnHasEquipment(thing, pawn));
 		}
 
 		// Token: 0x0600000C RID: 12 RVA: 0x000028CC File Offset: 0x00000ACC
@@ -226,7 +226,7 @@ namespace Proximity
 			if (ProximityGet.GetTProxRoomOnly(terrain))
 			{
 				Room room = terrainPosition.GetRoom(pawn.Map, RegionType.Set_Passable);
-				Room room2 = (pawn != null) ? pawn.Position.GetRoom(pawn.Map, RegionType.Set_Passable) : null;
+				Room room2 = pawn?.Position.GetRoom(pawn.Map, RegionType.Set_Passable);
 				if (room != null && room2 != null && room != room2)
 				{
 					return false;
@@ -269,7 +269,7 @@ namespace Proximity
 			}
 			Faction faction = pawn.Faction;
 			Map map = pawn.Map;
-			return (faction == ((map != null) ? map.ParentFaction : null) || ProxGlobals.GetTerrainEffectsOutsider(terrain, pawn)) && (ProximityGet.GetTProxEquipped(terrain) == null || ProxGlobals.GetTerrainPawnHasEquipment(terrain, pawn));
+			return (faction == (map?.ParentFaction) || GetTerrainEffectsOutsider(terrain, pawn)) && (ProximityGet.GetTProxEquipped(terrain) == null || GetTerrainPawnHasEquipment(terrain, pawn));
 		}
 
 		// Token: 0x0600000D RID: 13 RVA: 0x00002A08 File Offset: 0x00000C08
@@ -335,6 +335,10 @@ namespace Proximity
 			{
 				return true;
 			}
+			if(thing.Faction == null || pawn.Faction == null)
+			{
+				return false;
+			}
 			if (pawn.Faction.RelationKindWith(thing.Faction) == FactionRelationKind.Ally)
 			{
 				if (ProximityGet.GetProxAlly(thing.def))
@@ -358,73 +362,73 @@ namespace Proximity
 
 		// Token: 0x06000010 RID: 16 RVA: 0x00002BC8 File Offset: 0x00000DC8
 		internal static bool GetTerrainEffectsOutsider(TerrainDef terrain, Pawn pawn)
-		{
-			if (ProximityGet.GetTProxOutsider(terrain))
-			{
-				return true;
-			}
-			Map map = pawn.Map;
-			Faction faction = (map != null) ? map.ParentFaction : null;
-			if (faction != null)
-			{
-				if (pawn.Faction.RelationKindWith(faction) == FactionRelationKind.Ally)
-				{
-					if (ProximityGet.GetTProxAlly(terrain))
-					{
-						return true;
-					}
-				}
-				else if (pawn.Faction.RelationKindWith(faction) == FactionRelationKind.Neutral)
-				{
-					if (ProximityGet.GetTProxNeutral(terrain))
-					{
-						return true;
-					}
-				}
-				else if (pawn.Faction.RelationKindWith(faction) == FactionRelationKind.Hostile && ProximityGet.GetTProxHostile(terrain))
-				{
-					return true;
-				}
-			}
-			return false;
-		}
+        {
+            if (ProximityGet.GetTProxOutsider(terrain))
+            {
+                return true;
+            }
+            Map map = pawn.Map;
+            Faction faction = map?.ParentFaction;
+            if (faction == null || pawn.Faction == null)
+            {
+                return false;
+            }
+            if (pawn.Faction.RelationKindWith(faction) == FactionRelationKind.Ally)
+            {
+                if (ProximityGet.GetTProxAlly(terrain))
+                {
+                    return true;
+                }
+            }
+            else if (pawn.Faction.RelationKindWith(faction) == FactionRelationKind.Neutral)
+            {
+                if (ProximityGet.GetTProxNeutral(terrain))
+                {
+                    return true;
+                }
+            }
+            else if (pawn.Faction.RelationKindWith(faction) == FactionRelationKind.Hostile && ProximityGet.GetTProxHostile(terrain))
+            {
+                return true;
+            }
+            return false;
+        }
 
-		// Token: 0x06000011 RID: 17 RVA: 0x00002C40 File Offset: 0x00000E40
-		internal static float GetProxQualFactor(Thing thing)
+        // Token: 0x06000011 RID: 17 RVA: 0x00002C40 File Offset: 0x00000E40
+        internal static float GetProxQualFactor(Thing thing)
 		{
 			float result = 1f;
-			QualityCategory qualityCategory;
-			if (ProximityGet.GetProxQuality(thing.def) && thing.TryGetQuality(out qualityCategory))
-			{
-				switch (qualityCategory)
-				{
-				case QualityCategory.Awful:
-					result = 0.8f;
-					break;
-				case QualityCategory.Poor:
-					result = 0.9f;
-					break;
-				case QualityCategory.Normal:
-					result = 1f;
-					break;
-				case QualityCategory.Good:
-					result = 1.1f;
-					break;
-				case QualityCategory.Excellent:
-					result = 1.2f;
-					break;
-				case QualityCategory.Masterwork:
-					result = 1.4f;
-					break;
-				case QualityCategory.Legendary:
-					result = 1.65f;
-					break;
-				default:
-					result = 1f;
-					break;
-				}
-			}
-			return result;
+            if (ProximityGet.GetProxQuality(thing.def) && thing.TryGetQuality(out QualityCategory qualityCategory))
+            {
+                switch (qualityCategory)
+                {
+                    case QualityCategory.Awful:
+                        result = 0.8f;
+                        break;
+                    case QualityCategory.Poor:
+                        result = 0.9f;
+                        break;
+                    case QualityCategory.Normal:
+                        result = 1f;
+                        break;
+                    case QualityCategory.Good:
+                        result = 1.1f;
+                        break;
+                    case QualityCategory.Excellent:
+                        result = 1.2f;
+                        break;
+                    case QualityCategory.Masterwork:
+                        result = 1.4f;
+                        break;
+                    case QualityCategory.Legendary:
+                        result = 1.65f;
+                        break;
+                    default:
+                        result = 1f;
+                        break;
+                }
+            }
+            return result;
 		}
 
 		// Token: 0x04000001 RID: 1

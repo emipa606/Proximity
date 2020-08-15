@@ -486,8 +486,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxRoomOnly = thingdef.GetModExtension<ProximityDefs>().ProxRoomOnly;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxRoomOnly) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxRoomOnly;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxRoomOnly) : null).Value;
 			}
 			return false;
 		}
@@ -507,8 +507,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxQuality = thingdef.GetModExtension<ProximityDefs>().ProxQuality;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxQuality) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxQuality;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxQuality) : null).Value;
 			}
 			return false;
 		}
@@ -518,8 +518,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxDisabled = thingdef.GetModExtension<ProximityDefs>().ProxDisabled;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxDisabled) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxDisabled;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxDisabled) : null).Value;
 			}
 			return false;
 		}
@@ -529,8 +529,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxDrafted = thingdef.GetModExtension<ProximityDefs>().ProxDrafted;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxDrafted) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxDrafted;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxDrafted) : null).Value;
 			}
 			return false;
 		}
@@ -540,8 +540,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxComposMentis = thingdef.GetModExtension<ProximityDefs>().ProxComposMentis;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxComposMentis) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxComposMentis;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxComposMentis) : null).Value;
 			}
 			return false;
 		}
@@ -551,8 +551,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxColonist = thingdef.GetModExtension<ProximityDefs>().ProxColonist;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxColonist) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxColonist;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxColonist) : null).Value;
 			}
 			return false;
 		}
@@ -562,8 +562,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxOutsider = thingdef.GetModExtension<ProximityDefs>().ProxOutsider;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxOutsider) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxOutsider;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxOutsider) : null).Value;
 			}
 			return false;
 		}
@@ -573,8 +573,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxAlly = thingdef.GetModExtension<ProximityDefs>().ProxAlly;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxAlly) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxAlly;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxAlly) : null).Value;
 			}
 			return false;
 		}
@@ -584,8 +584,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxNeutral = thingdef.GetModExtension<ProximityDefs>().ProxNeutral;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxNeutral) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxNeutral;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxNeutral) : null).Value;
 			}
 			return false;
 		}
@@ -595,8 +595,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxHostile = thingdef.GetModExtension<ProximityDefs>().ProxHostile;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxHostile) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxHostile;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxHostile) : null).Value;
 			}
 			return false;
 		}
@@ -606,8 +606,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxPrisoner = thingdef.GetModExtension<ProximityDefs>().ProxPrisoner;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxPrisoner) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxPrisoner;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxPrisoner) : null).Value;
 			}
 			return false;
 		}
@@ -617,8 +617,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxAnimal = thingdef.GetModExtension<ProximityDefs>().ProxAnimal;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxAnimal) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxAnimal;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxAnimal) : null).Value;
 			}
 			return false;
 		}
@@ -628,8 +628,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxInsectoid = thingdef.GetModExtension<ProximityDefs>().ProxInsectoid;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxInsectoid) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxInsectoid;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxInsectoid) : null).Value;
 			}
 			return false;
 		}
@@ -639,8 +639,8 @@ namespace Proximity
 		{
 			if (thingdef.HasModExtension<ProximityDefs>() && thingdef != null)
 			{
-				bool proxMechanoid = thingdef.GetModExtension<ProximityDefs>().ProxMechanoid;
-				return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxMechanoid) : null).Value;
+                _ = thingdef.GetModExtension<ProximityDefs>().ProxMechanoid;
+                return ((thingdef != null) ? new bool?(thingdef.GetModExtension<ProximityDefs>().ProxMechanoid) : null).Value;
 			}
 			return false;
 		}
@@ -648,7 +648,7 @@ namespace Proximity
 		// Token: 0x0600005F RID: 95 RVA: 0x00005890 File Offset: 0x00003A90
 		public static List<string> GetProxEquipped(ThingDef thingdef)
 		{
-			if (!thingdef.HasModExtension<ProximityDefs>() || ((thingdef != null) ? thingdef.GetModExtension<ProximityDefs>().ProxEquipped : null) == null)
+			if (!thingdef.HasModExtension<ProximityDefs>() || (thingdef?.GetModExtension<ProximityDefs>().ProxEquipped) == null)
 			{
 				return null;
 			}
@@ -1138,8 +1138,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxRoomOnly = terrain.GetModExtension<ProximityDefs>().ProxRoomOnly;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxRoomOnly) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxRoomOnly;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxRoomOnly) : null).Value;
 			}
 			return false;
 		}
@@ -1159,8 +1159,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxQuality = terrain.GetModExtension<ProximityDefs>().ProxQuality;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxQuality) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxQuality;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxQuality) : null).Value;
 			}
 			return false;
 		}
@@ -1170,8 +1170,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxDisabled = terrain.GetModExtension<ProximityDefs>().ProxDisabled;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxDisabled) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxDisabled;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxDisabled) : null).Value;
 			}
 			return false;
 		}
@@ -1181,8 +1181,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxDrafted = terrain.GetModExtension<ProximityDefs>().ProxDrafted;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxDrafted) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxDrafted;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxDrafted) : null).Value;
 			}
 			return false;
 		}
@@ -1192,8 +1192,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxComposMentis = terrain.GetModExtension<ProximityDefs>().ProxComposMentis;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxComposMentis) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxComposMentis;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxComposMentis) : null).Value;
 			}
 			return false;
 		}
@@ -1203,8 +1203,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxColonist = terrain.GetModExtension<ProximityDefs>().ProxColonist;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxColonist) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxColonist;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxColonist) : null).Value;
 			}
 			return false;
 		}
@@ -1214,8 +1214,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxOutsider = terrain.GetModExtension<ProximityDefs>().ProxOutsider;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxOutsider) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxOutsider;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxOutsider) : null).Value;
 			}
 			return false;
 		}
@@ -1225,8 +1225,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxAlly = terrain.GetModExtension<ProximityDefs>().ProxAlly;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxAlly) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxAlly;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxAlly) : null).Value;
 			}
 			return false;
 		}
@@ -1236,8 +1236,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxNeutral = terrain.GetModExtension<ProximityDefs>().ProxNeutral;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxNeutral) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxNeutral;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxNeutral) : null).Value;
 			}
 			return false;
 		}
@@ -1247,8 +1247,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxHostile = terrain.GetModExtension<ProximityDefs>().ProxHostile;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxHostile) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxHostile;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxHostile) : null).Value;
 			}
 			return false;
 		}
@@ -1258,8 +1258,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxPrisoner = terrain.GetModExtension<ProximityDefs>().ProxPrisoner;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxPrisoner) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxPrisoner;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxPrisoner) : null).Value;
 			}
 			return false;
 		}
@@ -1269,8 +1269,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxAnimal = terrain.GetModExtension<ProximityDefs>().ProxAnimal;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxAnimal) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxAnimal;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxAnimal) : null).Value;
 			}
 			return false;
 		}
@@ -1280,8 +1280,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxInsectoid = terrain.GetModExtension<ProximityDefs>().ProxInsectoid;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxInsectoid) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxInsectoid;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxInsectoid) : null).Value;
 			}
 			return false;
 		}
@@ -1291,8 +1291,8 @@ namespace Proximity
 		{
 			if (terrain.HasModExtension<ProximityDefs>() && terrain != null)
 			{
-				bool proxMechanoid = terrain.GetModExtension<ProximityDefs>().ProxMechanoid;
-				return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxMechanoid) : null).Value;
+                _ = terrain.GetModExtension<ProximityDefs>().ProxMechanoid;
+                return ((terrain != null) ? new bool?(terrain.GetModExtension<ProximityDefs>().ProxMechanoid) : null).Value;
 			}
 			return false;
 		}
@@ -1300,7 +1300,7 @@ namespace Proximity
 		// Token: 0x0600009D RID: 157 RVA: 0x0000694C File Offset: 0x00004B4C
 		public static List<string> GetTProxEquipped(TerrainDef terrain)
 		{
-			if (!terrain.HasModExtension<ProximityDefs>() || ((terrain != null) ? terrain.GetModExtension<ProximityDefs>().ProxEquipped : null) == null)
+			if (!terrain.HasModExtension<ProximityDefs>() || (terrain?.GetModExtension<ProximityDefs>().ProxEquipped) == null)
 			{
 				return null;
 			}

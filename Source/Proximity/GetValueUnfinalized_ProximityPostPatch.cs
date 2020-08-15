@@ -11,7 +11,8 @@ namespace Proximity
 	{
 		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 		[HarmonyPostfix]
-		public static void PostFix(ref float __result, StatWorker __instance, StatDef ___stat, StatRequest req)
+        [Obsolete]
+        public static void PostFix(ref float __result, StatWorker __instance, StatDef ___stat, StatRequest req)
 		{
 			if (!req.HasThing)
 			{

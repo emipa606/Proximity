@@ -12,41 +12,41 @@ namespace Proximity
 		// Token: 0x0600001E RID: 30 RVA: 0x0000460C File Offset: 0x0000280C
 		static Proximity_Setup()
 		{
-			Proximity_Setup.Proximity_Setup_Pawns();
+            Proximity_Setup_Pawns();
 		}
 
 		// Token: 0x0600001F RID: 31 RVA: 0x00004614 File Offset: 0x00002814
 		private static void Proximity_Setup_Pawns()
 		{
-			Proximity_Setup.ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
+            ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
 			{
 				RaceProperties race = def.race;
 				return race != null && race.IsFlesh;
 			});
-			Proximity_Setup.ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
+            ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
 			{
 				RaceProperties race = def.race;
 				return race != null && race.Humanlike;
 			});
-			Proximity_Setup.ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
+            ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
 			{
 				RaceProperties race = def.race;
 				return race != null && race.Animal;
 			});
-			Proximity_Setup.ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
+            ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
 			{
 				RaceProperties race = def.race;
-				return ((race != null) ? race.FleshType.defName : null) == "Insectoid";
+				return (race?.FleshType.defName) == "Insectoid";
 			});
-			Proximity_Setup.ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
+            ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
 			{
 				RaceProperties race = def.race;
 				return race != null && race.IsMechanoid;
 			});
-			Proximity_Setup.ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
+            ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
 			{
 				RaceProperties race = def.race;
-				return ((race != null) ? race.FleshType.defName : null) == "Mechanoid";
+				return (race?.FleshType.defName) == "Mechanoid";
 			});
 		}
 
