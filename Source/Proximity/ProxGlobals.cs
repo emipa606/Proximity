@@ -191,8 +191,9 @@ namespace Proximity
 			ThingDef def = thing.def;
 			if (ProximityGet.GetProxRoomOnly(def))
 			{
-				Room room = thing?.Position.GetRoom(thing.Map, RegionType.Set_Passable);
-				Room room2 = pawn?.Position.GetRoom(thing.Map, RegionType.Set_Passable);
+				// Func def changed, this used to be GetRoom
+				Room room = thing?.Position.GetRoomOrAdjacent(thing.Map, RegionType.Set_Passable);
+				Room room2 = pawn?.Position.GetRoomOrAdjacent(thing.Map, RegionType.Set_Passable);
 				if (room != null && room2 != null && room != room2)
 				{
 					return false;
@@ -225,8 +226,8 @@ namespace Proximity
 		{
 			if (ProximityGet.GetTProxRoomOnly(terrain))
 			{
-				Room room = terrainPosition.GetRoom(pawn.Map, RegionType.Set_Passable);
-				Room room2 = pawn?.Position.GetRoom(pawn.Map, RegionType.Set_Passable);
+				Room room = terrainPosition.GetRoomOrAdjacent(pawn.Map, RegionType.Set_Passable);
+				Room room2 = pawn?.Position.GetRoomOrAdjacent(pawn.Map, RegionType.Set_Passable);
 				if (room != null && room2 != null && room != room2)
 				{
 					return false;
@@ -477,18 +478,8 @@ namespace Proximity
 			// Token: 0x04000079 RID: 121
 			public static StatDef DrugSynthesisSpeed;
 
-			//// Token: 0x0400007A RID: 122
-			//public static StatDef SculptingSpeed;
-
 			// Token: 0x0400007B RID: 123
 			public static StatDef SmeltingSpeed;
-
-
-			//// Token: 0x0400007C RID: 124
-			//public static StatDef SmithingSpeed;
-
-			//// Token: 0x0400007D RID: 125
-			//public static StatDef TailoringSpeed;
 
 			// Token: 0x0400007B RID: 126
 			public static StatDef GeneralLaborSpeed;

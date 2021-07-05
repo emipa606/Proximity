@@ -97,9 +97,6 @@ namespace Proximity
 		// Token: 0x0400004E RID: 78
 		public float ProxTrainAnimalChanceOffSet;
 
-		// Token: 0x0400004F RID: 79
-		public float ProxUnskilledLaborSpeedOffSet;
-
 		// Token: 0x04000050 RID: 80
 		public float ProxWorkSpeedGlobalOffSet;
 
