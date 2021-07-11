@@ -307,16 +307,6 @@ namespace Proximity
 			return 0f;
 		}
 
-		// Token: 0x06000040 RID: 64 RVA: 0x00004FFC File Offset: 0x000031FC
-		public static float GetProxUnskilledLaborSpeedOffSet(ThingDef thingdef)
-		{
-			if (thingdef.HasModExtension<ProximityDefs>())
-			{
-				return ((thingdef != null) ? new float?(thingdef.GetModExtension<ProximityDefs>().ProxUnskilledLaborSpeedOffSet) : null).Value;
-			}
-			return 0f;
-		}
-
 		// Token: 0x06000041 RID: 65 RVA: 0x00005040 File Offset: 0x00003240
 		public static float GetProxWorkSpeedGlobalOffSet(ThingDef thingdef)
 		{
@@ -407,16 +397,6 @@ namespace Proximity
 			return 0f;
 		}
 
-		//// Token: 0x0600004A RID: 74 RVA: 0x000052A4 File Offset: 0x000034A4
-		//public static float GetProxSculptingSpeedOffSet(ThingDef thingdef)
-		//{
-		//	if (thingdef.HasModExtension<ProximityDefs>())
-		//	{
-		//		return ((thingdef != null) ? new float?(thingdef.GetModExtension<ProximityDefs>().ProxSculptingSpeedOffSet) : null).Value;
-		//	}
-		//	return 0f;
-		//}
-
 		// Token: 0x0600004B RID: 75 RVA: 0x000052E8 File Offset: 0x000034E8
 		public static float GetProxSmeltingSpeedOffSet(ThingDef thingdef)
 		{
@@ -426,26 +406,6 @@ namespace Proximity
 			}
 			return 0f;
 		}
-
-		//// Token: 0x0600004C RID: 76 RVA: 0x0000532C File Offset: 0x0000352C
-		//public static float GetProxSmithingSpeedOffSet(ThingDef thingdef)
-		//{
-		//	if (thingdef.HasModExtension<ProximityDefs>())
-		//	{
-		//		return ((thingdef != null) ? new float?(thingdef.GetModExtension<ProximityDefs>().ProxSmithingSpeedOffSet) : null).Value;
-		//	}
-		//	return 0f;
-		//}
-
-		//// Token: 0x0600004D RID: 77 RVA: 0x00005370 File Offset: 0x00003570
-		//public static float GetProxTailoringSpeedOffSet(ThingDef thingdef)
-		//{
-		//	if (thingdef.HasModExtension<ProximityDefs>())
-		//	{
-		//		return ((thingdef != null) ? new float?(thingdef.GetModExtension<ProximityDefs>().ProxTailoringSpeedOffSet) : null).Value;
-		//	}
-		//	return 0f;
-		//}		
 		
 		// Token: 0x0600004A RID: 74 RVA: 0x000052A4 File Offset: 0x000034A4
 		public static float GetProxGeneralLaborSpeedOffSet(ThingDef thingdef)
@@ -959,16 +919,6 @@ namespace Proximity
 			return 0f;
 		}
 
-		// Token: 0x0600007E RID: 126 RVA: 0x000060B8 File Offset: 0x000042B8
-		public static float GetTProxUnskilledLaborSpeedOffSet(TerrainDef terrain)
-		{
-			if (terrain.HasModExtension<ProximityDefs>())
-			{
-				return ((terrain != null) ? new float?(terrain.GetModExtension<ProximityDefs>().ProxUnskilledLaborSpeedOffSet) : null).Value;
-			}
-			return 0f;
-		}
-
 		// Token: 0x0600007F RID: 127 RVA: 0x000060FC File Offset: 0x000042FC
 		public static float GetTProxWorkSpeedGlobalOffSet(TerrainDef terrain)
 		{
@@ -1059,16 +1009,6 @@ namespace Proximity
 			return 0f;
 		}
 
-		//// Token: 0x06000088 RID: 136 RVA: 0x00006360 File Offset: 0x00004560
-		//public static float GetTProxSculptingSpeedOffSet(TerrainDef terrain)
-		//{
-		//	if (terrain.HasModExtension<ProximityDefs>())
-		//	{
-		//		return ((terrain != null) ? new float?(terrain.GetModExtension<ProximityDefs>().ProxSculptingSpeedOffSet) : null).Value;
-		//	}
-		//	return 0f;
-		//}
-
 		// Token: 0x06000089 RID: 137 RVA: 0x000063A4 File Offset: 0x000045A4
 		public static float GetTProxSmeltingSpeedOffSet(TerrainDef terrain)
 		{
@@ -1077,27 +1017,7 @@ namespace Proximity
 				return ((terrain != null) ? new float?(terrain.GetModExtension<ProximityDefs>().ProxSmeltingSpeedOffSet) : null).Value;
 			}
 			return 0f;
-		}
-
-		//// Token: 0x0600008A RID: 138 RVA: 0x000063E8 File Offset: 0x000045E8
-		//public static float GetTProxSmithingSpeedOffSet(TerrainDef terrain)
-		//{
-		//	if (terrain.HasModExtension<ProximityDefs>())
-		//	{
-		//		return ((terrain != null) ? new float?(terrain.GetModExtension<ProximityDefs>().ProxSmithingSpeedOffSet) : null).Value;
-		//	}
-		//	return 0f;
-		//}
-
-		//// Token: 0x0600008B RID: 139 RVA: 0x0000642C File Offset: 0x0000462C
-		//public static float GetTProxTailoringSpeedOffSet(TerrainDef terrain)
-		//{
-		//	if (terrain.HasModExtension<ProximityDefs>())
-		//	{
-		//		return ((terrain != null) ? new float?(terrain.GetModExtension<ProximityDefs>().ProxTailoringSpeedOffSet) : null).Value;
-		//	}
-		//	return 0f;
-		//}		
+		}	
 		
 		// Token: 0x06000088 RID: 136 RVA: 0x00006360 File Offset: 0x00004560
 		public static float GetTProxGeneralLaborSpeedOffSet(TerrainDef terrain)

@@ -42,7 +42,6 @@ namespace Proximity
 			Scribe_Values.Look<float>(ref this.SmoothingSpeedOffSet, "Prox_SmoothingSpeedOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.TameAnimalChanceOffSet, "Prox_TameAnimalChanceOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.TrainAnimalChanceOffSet, "Prox_TrainAnimalChanceOffSet", 0f, false);
-			Scribe_Values.Look<float>(ref this.UnskilledLaborSpeedOffSet, "Prox_UnskilledLaborSpeedOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.WorkSpeedGlobalOffSet, "Prox_WorkSpeedGlobalOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.ButcheryFleshEfficiencyOffSet, "Prox_ButcheryFleshEfficiencyOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.ButcheryFleshSpeedOffSet, "Prox_ButcheryFleshSpeedOffSet", 0f, false);
@@ -52,10 +51,7 @@ namespace Proximity
 			Scribe_Values.Look<float>(ref this.DrugCookingSpeedOffSet, "Prox_DrugCookingSpeedOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.DrugSynthesisSpeedOffSet, "Prox_DrugSynthesisSpeedOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.FixBrokenDownBuildingSuccessChanceOffSet, "Prox_FixBrokenDownBuildingSuccessChanceOffSet", 0f, false);
-			//Scribe_Values.Look<float>(ref this.SculptingSpeedOffSet, "Prox_SculptingSpeedOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.SmeltingSpeedOffSet, "Prox_SmeltingSpeedOffSet", 0f, false);
-			//Scribe_Values.Look<float>(ref this.SmithingSpeedOffSet, "Prox_SmithingSpeedOffSet", 0f, false);
-			//Scribe_Values.Look<float>(ref this.TailoringSpeedOffSet, "Prox_TailoringSpeedOffSet", 0f, false);
 			Scribe_Values.Look<float>(ref this.GeneralLaborSpeedOffSet, "Prox_GeneralLaborSpeedOffSet", 0f, false);
 			Scribe_Values.Look<int>(ref this.ProxTick, "ProxTick", 0, false);
 		}
@@ -158,7 +154,6 @@ namespace Proximity
                     proximityData.SmoothingSpeedOffSet = 0f;
                     proximityData.TameAnimalChanceOffSet = 0f;
                     proximityData.TrainAnimalChanceOffSet = 0f;
-                    proximityData.UnskilledLaborSpeedOffSet = 0f;
                     proximityData.WorkSpeedGlobalOffSet = 0f;
                     proximityData.ButcheryFleshSpeedOffSet = 0f;
                     proximityData.ButcheryMechanoidSpeedOffSet = 0f;
@@ -168,10 +163,7 @@ namespace Proximity
                     proximityData.DrugCookingSpeedOffSet = 0f;
                     proximityData.DrugSynthesisSpeedOffSet = 0f;
                     proximityData.FixBrokenDownBuildingSuccessChanceOffSet = 0f;
-                    //proximityData.SculptingSpeedOffSet = 0f;
                     proximityData.SmeltingSpeedOffSet = 0f;
-                    //proximityData.SmithingSpeedOffSet = 0f;
-                    //proximityData.TailoringSpeedOffSet = 0f;
                     proximityData.GeneralLaborSpeedOffSet = 0f;
                 }
             }
@@ -306,10 +298,6 @@ namespace Proximity
                     {
                         proximityData.TrainAnimalChanceOffSet += proxQualFactor * ProximityGet.GetProxTrainAnimalChanceOffSet(thing.def);
                     }
-                    if (ProximityGet.GetProxUnskilledLaborSpeedOffSet(thing.def) != 0f)
-                    {
-                        proximityData.UnskilledLaborSpeedOffSet += proxQualFactor * ProximityGet.GetProxUnskilledLaborSpeedOffSet(thing.def);
-                    }
                     if (ProximityGet.GetProxWorkSpeedGlobalOffSet(thing.def) != 0f)
                     {
                         proximityData.WorkSpeedGlobalOffSet += proxQualFactor * ProximityGet.GetProxWorkSpeedGlobalOffSet(thing.def);
@@ -346,22 +334,10 @@ namespace Proximity
                     {
                         proximityData.FixBrokenDownBuildingSuccessChanceOffSet += proxQualFactor * ProximityGet.GetProxFixBrokenDownBuildingSuccessChanceOffSet(thing.def);
                     }
-                    //if (ProximityGet.GetProxSculptingSpeedOffSet(thing.def) != 0f)
-                    //{
-                    //	proximityData.SculptingSpeedOffSet += proxQualFactor * ProximityGet.GetProxSculptingSpeedOffSet(thing.def);
-                    //}
                     if (ProximityGet.GetProxSmeltingSpeedOffSet(thing.def) != 0f)
                     {
                         proximityData.SmeltingSpeedOffSet += proxQualFactor * ProximityGet.GetProxSmeltingSpeedOffSet(thing.def);
                     }
-                    //if (ProximityGet.GetProxSmithingSpeedOffSet(thing.def) != 0f)
-                    //{
-                    //	proximityData.SmithingSpeedOffSet += proxQualFactor * ProximityGet.GetProxSmithingSpeedOffSet(thing.def);
-                    //}
-                    //if (ProximityGet.GetProxTailoringSpeedOffSet(thing.def) != 0f)
-                    //{
-                    //	proximityData.TailoringSpeedOffSet += proxQualFactor * ProximityGet.GetProxTailoringSpeedOffSet(thing.def);
-                    //}
                     if (ProximityGet.GetProxGeneralLaborSpeedOffSet(thing.def) != 0f)
                     {
                         proximityData.GeneralLaborSpeedOffSet += proxQualFactor * ProximityGet.GetProxGeneralLaborSpeedOffSet(thing.def);
@@ -499,10 +475,6 @@ namespace Proximity
                     {
                         proximityData.TrainAnimalChanceOffSet += num * ProximityGet.GetTProxTrainAnimalChanceOffSet(terrain);
                     }
-                    if (ProximityGet.GetTProxUnskilledLaborSpeedOffSet(terrain) != 0f)
-                    {
-                        proximityData.UnskilledLaborSpeedOffSet += num * ProximityGet.GetTProxUnskilledLaborSpeedOffSet(terrain);
-                    }
                     if (ProximityGet.GetTProxWorkSpeedGlobalOffSet(terrain) != 0f)
                     {
                         proximityData.WorkSpeedGlobalOffSet += num * ProximityGet.GetTProxWorkSpeedGlobalOffSet(terrain);
@@ -539,22 +511,10 @@ namespace Proximity
                     {
                         proximityData.FixBrokenDownBuildingSuccessChanceOffSet += num * ProximityGet.GetTProxFixBrokenDownBuildingSuccessChanceOffSet(terrain);
                     }
-                    //if (ProximityGet.GetTProxSculptingSpeedOffSet(terrain) != 0f)
-                    //{
-                    //	proximityData.SculptingSpeedOffSet += num * ProximityGet.GetTProxSculptingSpeedOffSet(terrain);
-                    //}
                     if (ProximityGet.GetTProxSmeltingSpeedOffSet(terrain) != 0f)
                     {
                         proximityData.SmeltingSpeedOffSet += num * ProximityGet.GetTProxSmeltingSpeedOffSet(terrain);
                     }
-                    //if (ProximityGet.GetTProxSmithingSpeedOffSet(terrain) != 0f)
-                    //{
-                    //	proximityData.SmithingSpeedOffSet += num * ProximityGet.GetTProxSmithingSpeedOffSet(terrain);
-                    //}
-                    //if (ProximityGet.GetTProxTailoringSpeedOffSet(terrain) != 0f)
-                    //{
-                    //	proximityData.TailoringSpeedOffSet += num * ProximityGet.GetTProxTailoringSpeedOffSet(terrain);
-                    //}
                     if (ProximityGet.GetTProxGeneralLaborSpeedOffSet(terrain) != 0f)
                     {
                         proximityData.GeneralLaborSpeedOffSet += num * ProximityGet.GetTProxGeneralLaborSpeedOffSet(terrain);
@@ -600,8 +560,6 @@ namespace Proximity
                                 return proximityData.PlantWorkSpeedOffSet;
                             case 16:
                                 return proximityData.SmoothingSpeedOffSet;
-                            case 17:
-                                return proximityData.UnskilledLaborSpeedOffSet;
                             case 18:
                                 return proximityData.WorkSpeedGlobalOffSet;
                             case 19:
@@ -652,14 +610,8 @@ namespace Proximity
                                 return proximityData.DrugCookingSpeedOffSet;
                             case 42:
                                 return proximityData.DrugSynthesisSpeedOffSet;
-                            //case 43:
-                            //	return proximityData.SculptingSpeedOffSet;
                             case 44:
                                 return proximityData.SmeltingSpeedOffSet;
-                            //case 45:
-                            //	return proximityData.SmithingSpeedOffSet;
-                            //case 46:
-                            //	return proximityData.TailoringSpeedOffSet;
                             case 47:
                                 return proximityData.ComfyTemperatureMinOffSet;
                             case 48:
@@ -764,9 +716,6 @@ namespace Proximity
 		// Token: 0x04000021 RID: 33
 		public float TrainAnimalChanceOffSet;
 
-		// Token: 0x04000022 RID: 34
-		public float UnskilledLaborSpeedOffSet;
-
 		// Token: 0x04000023 RID: 35
 		public float WorkSpeedGlobalOffSet;
 
@@ -799,12 +748,6 @@ namespace Proximity
 
 		// Token: 0x0400002D RID: 45
 		public float SmeltingSpeedOffSet;
-
-        //// Token: 0x0400002E RID: 46
-        //public float SmithingSpeedOffSet;
-
-        //// Token: 0x0400002F RID: 47
-        //public float TailoringSpeedOffSet;
 
         // Token: 0x0400002C RID: 49
         public float GeneralLaborSpeedOffSet;

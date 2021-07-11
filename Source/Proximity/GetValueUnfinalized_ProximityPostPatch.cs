@@ -143,10 +143,6 @@ namespace Proximity
 			{
 				__result += ProximityData.GetProxData(thing, 26);
 			}
-            if (___stat == StatDefOf.UnskilledLaborSpeed)
-            {
-                __result += ProximityData.GetProxData(thing, 17);
-            }
             if (___stat == StatDefOf.WorkSpeedGlobal)
 			{
 				__result += ProximityData.GetProxData(thing, 18);
@@ -183,22 +179,10 @@ namespace Proximity
 			{
 				__result += ProximityData.GetProxData(thing, 31);
 			}
-			//if (___stat == ProxGlobals.StatDefOf.SculptingSpeed)
-			//{
-			//	__result += ProximityData.GetProxData(thing, 43);
-			//}
 			if (___stat == ProxGlobals.StatDefOf.SmeltingSpeed)
 			{
 				__result += ProximityData.GetProxData(thing, 44);
 			}
-			//if (___stat == ProxGlobals.StatDefOf.SmithingSpeed)
-			//{
-			//	__result += ProximityData.GetProxData(thing, 45);
-			//}
-			//if (___stat == ProxGlobals.StatDefOf.TailoringSpeed)
-			//{
-			//	__result += ProximityData.GetProxData(thing, 46);
-			//}
 			if (___stat == ProxGlobals.StatDefOf.GeneralLaborSpeed)
 			{
 				__result += ProximityData.GetProxData(thing, 49);
