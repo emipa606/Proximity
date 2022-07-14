@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>Proximity (Continued)</name>
   <packageId>Mlie.Proximity</packageId>
@@ -21,28 +21,34 @@
   <loadAfter>
     <li>brrainz.harmony</li>
   </loadAfter>
-  <description>[img]https://i.imgur.com/WAEzk68.png[/img]
+  <description>[img]https://i.imgur.com/buuPQel.png[/img]
 Update of peladors mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=1719896867
 
-[img]https://i.imgur.com/7Gzt3Rg.png[/img]
+- For detailed description, download the [url=https://github.com/emipa606/Proximity/raw/main/Source/ProximityNotes.pdf]PDF[/url]
+
+[img]https://i.imgur.com/pufA0kM.png[/img]
 
 [table]
 	[tr]
 		[td][url=https://invite.gg/Mlie][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td]
 		[td][url=https://github.com/emipa606/Proximity][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]
-	[/tr]
+    [/tr]
+    [tr]
+        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]
+        [td][img]https://i.imgur.com/h5VwTNL.png[/img][/td]
+    [/tr]
 [/table]
 	
-[img]https://i.imgur.com/NOW7jU1.png[/img]
+[img]https://i.imgur.com/Z4GOv8H.png[/img]
 
 [h1]Important News[/h1]
 
-Ashnal, another mod developer has taken it upon himself to adopt the functionality from Proximity. And is intending to extend the functionality of the mod further. This since I don&apos;t personally have the spare time to do so.
+Ashnal, another mod developer has taken it upon himself to adopt the functionality from Proximity. And is intending to extend the functionality of the mod further. This since I don't personally have the spare time to do so.
 
 This means that when developed it will be appearing as a new mod or as a library resource for people to make use of.
 
-I&apos;d hope that as indicated the existing functionality of Proximity will be maintained as a result.
+I'd hope that as indicated the existing functionality of Proximity will be maintained as a result.
 
 Will keep you informed.
 
@@ -50,7 +56,7 @@ Will keep you informed.
 
 [h1]Overview[/h1]
 
-Modding tool to manipulate stats and add hediff effects to pawns when in proximity to buildings or terrain. This does not add content to the game in itself, but provides functionality to modders with it&apos;s use.
+Modding tool to manipulate stats and add hediff effects to pawns when in proximity to buildings or terrain. This does not add content to the game in itself, but provides functionality to modders with it's use.
 
 [h1]Details[/h1]
 
@@ -66,7 +72,7 @@ Otherwise this mod would need to be utilised as a required item or dependency to
 
 [h1]Compatibility Advice[/h1]
 
-I would not use this tool to add effects to &quot;vanilla&quot; items, since if another modder also applied their definitions to the same item then there would be a conflict of interest. It is recommended that this tool be used with &quot;custom&quot; buildings or &quot;custom&quot; terrain that have been developed in a mod.
+I would not use this tool to add effects to "vanilla" items, since if another modder also applied their definitions to the same item then there would be a conflict of interest. It is recommended that this tool be used with "custom" buildings or "custom" terrain that have been developed in a mod.
 
 
 [h1]Credits[/h1]
@@ -78,7 +84,7 @@ Brainchild/Requested by Oskar Potoki.
 (CC BY-NC-SA 4.0)
 
 
-[img]https://i.imgur.com/Rs6T6cr.png[/img]
+[img]https://i.imgur.com/PwoNOj4.png[/img]
 [list]
 [*] See if the the error persists if you just have this mod and its requirements active.
 [*] If not, try adding your other mods until it happens again.
@@ -89,4 +95,3 @@ Brainchild/Requested by Oskar Potoki.
 [/list]
 </description>
 </ModMetaData>
-
