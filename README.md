@@ -1,33 +1,26 @@
 # Proximity
 
-![Image](https://i.imgur.com/WAEzk68.png)
+![Image](https://i.imgur.com/buuPQel.png)
 
 Update of peladors mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=1719896867
 
-![Image](https://i.imgur.com/7Gzt3Rg.png)
+- For detailed description, download the https://github.com/emipa606/Proximity/raw/main/Source/ProximityNotes.pdf]PDF
 
+![Image](https://i.imgur.com/pufA0kM.png)
 
-[table]
-	[tr]
-		[td]https://invite.gg/Mlie]![Image](https://i.imgur.com/zdzzBrc.png)
-[/td]
-		[td]https://github.com/emipa606/Proximity]![Image](https://i.imgur.com/kTkpTOE.png)
-[/td]
-	[/tr]
-[/table]
 	
-![Image](https://i.imgur.com/NOW7jU1.png)
+![Image](https://i.imgur.com/Z4GOv8H.png)
 
 
 # Important News
 
 
-Ashnal, another mod developer has taken it upon himself to adopt the functionality from Proximity. And is intending to extend the functionality of the mod further. This since I don&apos;t personally have the spare time to do so.
+Ashnal, another mod developer has taken it upon himself to adopt the functionality from Proximity. And is intending to extend the functionality of the mod further. This since I don't personally have the spare time to do so.
 
 This means that when developed it will be appearing as a new mod or as a library resource for people to make use of.
 
-I&apos;d hope that as indicated the existing functionality of Proximity will be maintained as a result.
+I'd hope that as indicated the existing functionality of Proximity will be maintained as a result.
 
 Will keep you informed.
 
@@ -36,7 +29,7 @@ Will keep you informed.
 # Overview
 
 
-Modding tool to manipulate stats and add hediff effects to pawns when in proximity to buildings or terrain. This does not add content to the game in itself, but provides functionality to modders with it&apos;s use.
+Modding tool to manipulate stats and add hediff effects to pawns when in proximity to buildings or terrain. This does not add content to the game in itself, but provides functionality to modders with it's use.
 
 # Details
 
@@ -55,7 +48,7 @@ Otherwise this mod would need to be utilised as a required item or dependency to
 # Compatibility Advice
 
 
-I would not use this tool to add effects to &quot;vanilla&quot; items, since if another modder also applied their definitions to the same item then there would be a conflict of interest. It is recommended that this tool be used with &quot;custom&quot; buildings or &quot;custom&quot; terrain that have been developed in a mod.
+I would not use this tool to add effects to "vanilla" items, since if another modder also applied their definitions to the same item then there would be a conflict of interest. It is recommended that this tool be used with "custom" buildings or "custom" terrain that have been developed in a mod.
 
 
 # Credits
@@ -68,7 +61,7 @@ Brainchild/Requested by Oskar Potoki.
 (CC BY-NC-SA 4.0)
 
 
-![Image](https://i.imgur.com/Rs6T6cr.png)
+![Image](https://i.imgur.com/PwoNOj4.png)
 
 
 
@@ -78,6 +71,7 @@ Brainchild/Requested by Oskar Potoki.
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
+
 
 
 

@@ -1,5 +1,14 @@
 # Changelog for Proximity
 
+1.4.3 - The 1.4 update didnt seem to get published
+
+
+1.4.2 - The 1.4 update didnt seem to get published
+
+
+1.4.1 - Mod updated for 1.4 and passed autotests
+
+
 1.0.3.0 - Mod updated for 1.3 and passed autotests
 
 
