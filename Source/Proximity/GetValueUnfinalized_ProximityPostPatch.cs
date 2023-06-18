@@ -1,4 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -6,226 +10,79 @@ using Verse;
 namespace Proximity;
 
 [HarmonyPatch(typeof(StatWorker), "GetValueUnfinalized")]
-public class GetValueUnfinalized_ProximityPostPatch
+public static class StatWorker_GetValueUnfinalized_Patch
 {
-    [HarmonyPostfix]
-    [Obsolete]
-    public static void PostFix(ref float __result, StatWorker __instance, StatDef ___stat, StatRequest req)
+    public static Dictionary<StatDef, int> proximityStats = new Dictionary<StatDef, int>
     {
-        if (!req.HasThing)
-        {
-            return;
-        }
+        {StatDefOf.MoveSpeed, 1},
+        {StatDefOf.GlobalLearningFactor, 2},
+        {StatDefOf.PsychicSensitivity, 3},
+        {StatDefOf.ToxicResistance, 4},
+        {StatDefOf.NegotiationAbility, 24},
+        {StatDefOf.SocialImpact, 25},
+        {StatDefOf.ComfyTemperatureMin, 47},
+        {StatDefOf.ComfyTemperatureMax, 48},
+        {StatDefOf.ShootingAccuracyPawn, 29},
+        {StatDefOf.AimingDelayFactor, 22},
+        {StatDefOf.MeleeDodgeChance, 9},
+        {StatDefOf.MeleeHitChance, 10},
+        {StatDefOf.ImmunityGainSpeed, 23},
+        {StatDefOf.MedicalTendSpeed, 32},
+        {StatDefOf.MedicalTendQuality, 33},
+        {ProxGlobals.StatDefOf.MedicalOperationSpeed, 34},
+        {StatDefOf.MedicalSurgerySuccessChance, 35},
+        {StatDefOf.AnimalGatherSpeed, 11},
+        {StatDefOf.AnimalGatherYield, 27},
+        {StatDefOf.ConstructionSpeed, 12},
+        {StatDefOf.ConstructSuccessChance, 19},
+        {StatDefOf.EatingSpeed, 13},
+        {StatDefOf.HuntingStealth, 30},
+        {StatDefOf.MiningSpeed, 14},
+        {StatDefOf.PlantHarvestYield, 20},
+        {StatDefOf.PlantWorkSpeed, 15},
+        {StatDefOf.ResearchSpeed, 28},
+        {StatDefOf.SmoothingSpeed, 16},
+        {StatDefOf.TameAnimalChance, 21},
+        {StatDefOf.TrainAnimalChance, 26},
+        {StatDefOf.WorkSpeedGlobal, 18},
+        {ProxGlobals.StatDefOf.ButcheryFleshSpeed, 36},
+        {ProxGlobals.StatDefOf.ButcheryMechanoidSpeed, 37},
+        {ProxGlobals.StatDefOf.ButcheryFleshEfficiency, 38},
+        {ProxGlobals.StatDefOf.ButcheryMechanoidEfficiency, 39},
+        {ProxGlobals.StatDefOf.CookSpeed, 40},
+        {ProxGlobals.StatDefOf.DrugCookingSpeed, 41},
+        {ProxGlobals.StatDefOf.DrugSynthesisSpeed, 42},
+        {StatDefOf.FixBrokenDownBuildingSuccessChance, 31},
+        {ProxGlobals.StatDefOf.SmeltingSpeed, 44},
+        {ProxGlobals.StatDefOf.GeneralLaborSpeed, 49},
+    };
 
-        var thing = req.Thing;
-        if (!(thing is Pawn))
-        {
-            return;
-        }
 
-        if (___stat == StatDefOf.MoveSpeed)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
+    {
+        var codes = codeInstructions.ToList();
+        var statField = AccessTools.Field(typeof(StatWorker), "stat");
+        var setOffsets = AccessTools.Method(typeof(StatWorker_GetValueUnfinalized_Patch), "SetOffsets");
+        for (var i = 0; i < codes.Count; i++)
         {
-            __result += ProximityData.GetProxData(thing, 1);
+            var code = codes[i];
+            yield return code;
+            if (i > 1 && codes[i].opcode == OpCodes.Brfalse && codes[i - 1].opcode == OpCodes.Ldloc_1)
+            {
+                yield return new CodeInstruction(OpCodes.Ldloca_S, 0);
+                yield return new CodeInstruction(OpCodes.Ldarg_0);
+                yield return new CodeInstruction(OpCodes.Ldfld, statField);
+                yield return new CodeInstruction(OpCodes.Ldarg_S, 1);
+                yield return new CodeInstruction(OpCodes.Call, setOffsets);
+            }
         }
+    }
 
-        if (___stat == StatDefOf.GlobalLearningFactor)
+    public static void SetOffsets(ref float __result, StatDef stat, StatRequest req)
+    {
+        if (proximityStats.TryGetValue(stat, out var num))
         {
-            __result += ProximityData.GetProxData(thing, 2);
-        }
-
-        if (___stat == StatDefOf.NegotiationAbility)
-        {
-            __result += ProximityData.GetProxData(thing, 24);
-        }
-
-        if (___stat == StatDefOf.PsychicSensitivity)
-        {
-            __result += ProximityData.GetProxData(thing, 3);
-        }
-
-        if (___stat == StatDefOf.SocialImpact)
-        {
-            __result += ProximityData.GetProxData(thing, 25);
-        }
-
-        if (___stat == StatDefOf.ToxicResistance)
-        {
-            __result += ProximityData.GetProxData(thing, 4);
-        }
-
-        if (___stat == StatDefOf.ComfyTemperatureMin)
-        {
-            __result += ProximityData.GetProxData(thing, 47);
-        }
-
-        if (___stat == StatDefOf.ComfyTemperatureMax)
-        {
-            __result += ProximityData.GetProxData(thing, 48);
-        }
-
-        if (___stat == StatDefOf.ShootingAccuracyPawn)
-        {
-            __result += ProximityData.GetProxData(thing, 29);
-        }
-
-        if (___stat == StatDefOf.AimingDelayFactor)
-        {
-            __result += ProximityData.GetProxData(thing, 22);
-        }
-
-        if (___stat == StatDefOf.MeleeDodgeChance)
-        {
-            __result += ProximityData.GetProxData(thing, 9);
-        }
-
-        if (___stat == StatDefOf.MeleeHitChance)
-        {
-            __result += ProximityData.GetProxData(thing, 10);
-        }
-
-        if (___stat == StatDefOf.ImmunityGainSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 23);
-        }
-
-        if (___stat == StatDefOf.MedicalTendSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 32);
-        }
-
-        if (___stat == StatDefOf.MedicalTendQuality)
-        {
-            __result += ProximityData.GetProxData(thing, 33);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.MedicalOperationSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 34);
-        }
-
-        if (___stat == StatDefOf.MedicalSurgerySuccessChance)
-        {
-            __result += ProximityData.GetProxData(thing, 35);
-        }
-
-        if (___stat == StatDefOf.AnimalGatherSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 11);
-        }
-
-        if (___stat == StatDefOf.AnimalGatherYield)
-        {
-            __result += ProximityData.GetProxData(thing, 27);
-        }
-
-        if (___stat == StatDefOf.ConstructionSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 12);
-        }
-
-        if (___stat == StatDefOf.ConstructSuccessChance)
-        {
-            __result += ProximityData.GetProxData(thing, 19);
-        }
-
-        if (___stat == StatDefOf.EatingSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 13);
-        }
-
-        if (___stat == StatDefOf.HuntingStealth)
-        {
-            __result += ProximityData.GetProxData(thing, 30);
-        }
-
-        if (___stat == StatDefOf.MiningSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 14);
-        }
-
-        if (___stat == StatDefOf.PlantHarvestYield)
-        {
-            __result += ProximityData.GetProxData(thing, 20);
-        }
-
-        if (___stat == StatDefOf.PlantWorkSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 15);
-        }
-
-        if (___stat == StatDefOf.ResearchSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 28);
-        }
-
-        if (___stat == StatDefOf.SmoothingSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 16);
-        }
-
-        if (___stat == StatDefOf.TameAnimalChance)
-        {
-            __result += ProximityData.GetProxData(thing, 21);
-        }
-
-        if (___stat == StatDefOf.TrainAnimalChance)
-        {
-            __result += ProximityData.GetProxData(thing, 26);
-        }
-
-        if (___stat == StatDefOf.WorkSpeedGlobal)
-        {
-            __result += ProximityData.GetProxData(thing, 18);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.ButcheryFleshSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 36);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.ButcheryMechanoidSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 37);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.ButcheryFleshEfficiency)
-        {
-            __result += ProximityData.GetProxData(thing, 38);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.ButcheryMechanoidEfficiency)
-        {
-            __result += ProximityData.GetProxData(thing, 39);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.CookSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 40);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.DrugCookingSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 41);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.DrugSynthesisSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 42);
-        }
-
-        if (___stat == StatDefOf.FixBrokenDownBuildingSuccessChance)
-        {
-            __result += ProximityData.GetProxData(thing, 31);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.SmeltingSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 44);
-        }
-
-        if (___stat == ProxGlobals.StatDefOf.GeneralLaborSpeed)
-        {
-            __result += ProximityData.GetProxData(thing, 49);
+            __result += ProximityData.GetProxData(req.Thing, num);
         }
     }
 }

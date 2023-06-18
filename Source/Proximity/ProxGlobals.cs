@@ -1,4 +1,5 @@
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace Proximity;
@@ -8,9 +9,6 @@ internal class ProxGlobals
     internal static int closeRange = 10;
 
     internal static int ProxSecondTick = 2;
-
-    internal static bool UseTerrain = true;
-
     internal static int ExtendTicks()
     {
         var num = ProxSecondTick;
@@ -163,18 +161,52 @@ internal class ProxGlobals
         return terrainPosition.InHorDistOf(pawn.Position, EffRange);
     }
 
+    private static List<ThingDef> _proximityThings;
+    public static List<ThingDef> ProximityThings
+    {
+        get
+        {
+            if (_proximityThings == null)
+            {
+                _proximityThings = new List<ThingDef>();
+                foreach (var def in DefDatabase<ThingDef>.AllDefs)
+                {
+                    if (def.thingClass != null && typeof(Building).IsAssignableFrom(def.thingClass))
+                    {
+                        if (def.HasModExtension<ProximityDefs>())
+                        {
+                            _proximityThings.Add(def);
+                        }
+                    }
+                }
+            }
+            return _proximityThings;
+        }
+    }
+
+
+    private static HashSet<TerrainDef> _proximityTerrains;
+    public static HashSet<TerrainDef> ProximityTerrains
+    {
+        get
+        {
+            if (_proximityTerrains is null)
+            {
+                _proximityTerrains = new HashSet<TerrainDef>();
+                foreach (var terrain in DefDatabase<TerrainDef>.AllDefs)
+                {
+                    if (terrain.HasModExtension<ProximityDefs>())
+                    {
+                        _proximityTerrains.Add(terrain);
+                    }
+                }
+            }
+            return _proximityTerrains;
+        }
+    }
+
     internal static bool IsNearThingValid(Thing NearThing, Pawn pawn)
     {
-        if (!(NearThing is Building))
-        {
-            return false;
-        }
-
-        if (!NearThing.def.HasModExtension<ProximityDefs>())
-        {
-            return false;
-        }
-
         if (!ProximityGet.GetProxDisabled(NearThing.def))
         {
             return true;
@@ -204,11 +236,6 @@ internal class ProxGlobals
         }
 
         return true;
-    }
-
-    internal static bool IsTerrainValid(TerrainDef terrain, Pawn pawn)
-    {
-        return terrain.HasModExtension<ProximityDefs>();
     }
 
     internal static bool NearThingEffects(Thing thing, Pawn pawn)

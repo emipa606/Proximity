@@ -359,11 +359,6 @@ public class ProximityGet
 
     public static bool GetProxDisabled(ThingDef thingdef)
     {
-        if (!thingdef.HasModExtension<ProximityDefs>())
-        {
-            return false;
-        }
-
         _ = thingdef.GetModExtension<ProximityDefs>().ProxDisabled;
         return new bool?(thingdef.GetModExtension<ProximityDefs>().ProxDisabled)
             .Value;
@@ -553,7 +548,7 @@ public class ProximityGet
             : 0f;
     }
 
-    public static float GetTProxToxicSensitivityOffSet(TerrainDef terrain)
+    public static float GetTProxToxicResistanceOffSet(TerrainDef terrain)
     {
         return terrain.HasModExtension<ProximityDefs>()
             ? new float?(terrain.GetModExtension<ProximityDefs>().ProxToxicResistanceOffSet).Value
