@@ -1,5 +1,8 @@
 # Changelog for Proximity
 
+1.4.4 - Performance optimizations by Taranchuk
+
+
 1.4.3 - The 1.4 update didnt seem to get published
 
 

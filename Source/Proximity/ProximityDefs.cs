@@ -5,6 +5,7 @@ namespace Proximity;
 
 public class ProximityDefs : DefModExtension
 {
+    public readonly string ProxHediff = "";
     public float ProxAimingDelayFactorOffSet;
 
     public bool ProxAlly;
@@ -58,8 +59,6 @@ public class ProximityDefs : DefModExtension
     public float ProxGeneralLaborSpeedOffSet;
 
     public float ProxGlobalLearningFactorOffSet;
-
-    public string ProxHediff = "";
 
     public float ProxHediffSev;
 

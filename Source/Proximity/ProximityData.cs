@@ -6,6 +6,10 @@ namespace Proximity;
 
 public class ProximityData : ThingComp
 {
+    private static readonly Dictionary<IntVec3, List<IntVec3>> cachedRadialCellsAround =
+        new Dictionary<IntVec3, List<IntVec3>>();
+
+    private static readonly List<Thing> thingsAround = new List<Thing>();
     public float AimingDelayFactorOffSet;
 
     public float AnimalGatherSpeedOffSet;
@@ -64,6 +68,8 @@ public class ProximityData : ThingComp
 
     public float NegotiationAbilityOffSet;
 
+    private Pawn pawn;
+
     public float PlantHarvestYieldOffSet;
 
     public float PlantWorkSpeedOffSet;
@@ -92,7 +98,6 @@ public class ProximityData : ThingComp
 
     public float WorkSpeedGlobalOffSet;
 
-    private Pawn pawn;
     private Pawn Pawn
     {
         get
@@ -101,6 +106,7 @@ public class ProximityData : ThingComp
             {
                 pawn = (Pawn)parent;
             }
+
             return pawn;
         }
     }
@@ -153,66 +159,67 @@ public class ProximityData : ThingComp
         Scribe_Values.Look(ref ProxTick, "ProxTick");
     }
 
-    private static Dictionary<IntVec3, List<IntVec3>> cachedRadialCellsAround = new Dictionary<IntVec3, List<IntVec3>>();
-    
-    private static List<Thing> thingsAround = new List<Thing>();
-
     public override void CompTick()
     {
         if (Find.TickManager.TicksGame <= ProxTick)
         {
             return;
         }
-        var pawn = Pawn;
-        var pawnMap = pawn.Map;
-        var pawnPos = pawn.Position;
+
+        var localPawn = Pawn;
+        var pawnMap = localPawn.Map;
+        var pawnPos = localPawn.Position;
         ProximityStatReset();
         if (pawnMap != null)
         {
             thingsAround.Clear();
             foreach (var def in ProxGlobals.ProximityThings)
             {
-                thingsAround.AddRange(pawnMap.listerThings.ThingsOfDef(def).Where(x => x.Position.DistanceTo(pawnPos) <= ProxGlobals.closeRange).ToList());
+                thingsAround.AddRange(pawnMap.listerThings.ThingsOfDef(def)
+                    .Where(x => x.Position.DistanceTo(pawnPos) <= ProxGlobals.closeRange).ToList());
             }
+
             foreach (var thing in thingsAround)
             {
-                if (!ProxGlobals.IsNearThingValid(thing, pawn) || !ProxGlobals.NearThingEffects(thing, pawn))
+                if (!ProxGlobals.IsNearThingValid(thing, localPawn) || !ProxGlobals.NearThingEffects(thing, localPawn))
                 {
                     continue;
                 }
 
                 var proxRange = ProximityGet.GetProxRange(thing.def);
-                if (!ProxGlobals.NearThingInRange(thing, pawn, proxRange))
+                if (!ProxGlobals.NearThingInRange(thing, localPawn, proxRange))
                 {
                     continue;
                 }
 
-                ProxGlobals.ProximityHediffEffect(thing, pawn);
+                ProxGlobals.ProximityHediffEffect(thing, localPawn);
                 ProximityStatSet(thing);
             }
+
             if (!cachedRadialCellsAround.TryGetValue(pawnPos, out var cells))
             {
-                cachedRadialCellsAround[pawnPos] = cells = GenRadial.RadialCellsAround(pawnPos, ProxGlobals.closeRange, true)
+                cachedRadialCellsAround[pawnPos] = cells = GenRadial
+                    .RadialCellsAround(pawnPos, ProxGlobals.closeRange, true)
                     .ToList();
             }
 
             foreach (var cell in cells)
             {
-                bool inBounds = cell.InBounds(pawnMap);
+                var inBounds = cell.InBounds(pawnMap);
                 var terrainDef = inBounds ? cell.GetTerrain(pawnMap) : null;
                 if (terrainDef == null || !ProxGlobals.ProximityTerrains.Contains(terrainDef) ||
-                    !ProxGlobals.TerrainEffects(terrainDef, cell, pawn))
+                    !ProxGlobals.TerrainEffects(terrainDef, cell, localPawn))
                 {
                     continue;
                 }
 
                 var tproxRange = ProximityGet.GetTProxRange(terrainDef);
-                if (!ProxGlobals.TerrainInRange(terrainDef, cell, pawn, tproxRange))
+                if (!ProxGlobals.TerrainInRange(terrainDef, cell, localPawn, tproxRange))
                 {
                     continue;
                 }
 
-                ProxGlobals.ProximityTerrainHediffEffect(terrainDef, cell, pawn);
+                ProxGlobals.ProximityTerrainHediffEffect(terrainDef, cell, localPawn);
                 ProximityTStatSet(terrainDef);
             }
         }
@@ -222,138 +229,179 @@ public class ProximityData : ThingComp
 
     internal void ProximityStatReset()
     {
-        this.MoveSpeedOffSet = 0f;
-        this.GlobalLearningFactorOffSet = 0f;
-        this.NegotiationAbilityOffSet = 0f;
-        this.PsychicSensitivityOffSet = 0f;
-        this.SocialImpactOffSet = 0f;
-        this.ToxicResistanceOffSet = 0f;
-        this.ComfyTemperatureMinOffSet = 0f;
-        this.ComfyTemperatureMaxOffSet = 0f;
-        this.AimingDelayFactorOffSet = 0f;
-        this.ShootingAccuracyPawnOffSet = 0f;
-        this.MeleeDodgeChanceOffSet = 0f;
-        this.MeleeHitChanceOffSet = 0f;
-        this.ImmunityGainSpeedOffSet = 0f;
-        this.MedicalTendSpeedOffSet = 0f;
-        this.MedicalTendQualityOffSet = 0f;
-        this.MedicalOperationSpeedOffSet = 0f;
-        this.MedicalSurgerySuccessChanceOffSet = 0f;
-        this.AnimalGatherSpeedOffSet = 0f;
-        this.AnimalGatherYieldOffSet = 0f;
-        this.ConstructionSpeedOffSet = 0f;
-        this.ConstructSuccessChanceOffSet = 0f;
-        this.EatingSpeedOffSet = 0f;
-        this.HuntingStealthOffSet = 0f;
-        this.MiningSpeedOffSet = 0f;
-        this.PlantHarvestYieldOffSet = 0f;
-        this.PlantWorkSpeedOffSet = 0f;
-        this.ResearchSpeedOffSet = 0f;
-        this.SmoothingSpeedOffSet = 0f;
-        this.TameAnimalChanceOffSet = 0f;
-        this.TrainAnimalChanceOffSet = 0f;
-        this.WorkSpeedGlobalOffSet = 0f;
-        this.ButcheryFleshSpeedOffSet = 0f;
-        this.ButcheryMechanoidSpeedOffSet = 0f;
-        this.ButcheryFleshEfficiencyOffSet = 0f;
-        this.ButcheryMechanoidEfficiencyOffSet = 0f;
-        this.CookSpeedOffSet = 0f;
-        this.DrugCookingSpeedOffSet = 0f;
-        this.DrugSynthesisSpeedOffSet = 0f;
-        this.FixBrokenDownBuildingSuccessChanceOffSet = 0f;
-        this.SmeltingSpeedOffSet = 0f;
-        this.GeneralLaborSpeedOffSet = 0f;
+        MoveSpeedOffSet = 0f;
+        GlobalLearningFactorOffSet = 0f;
+        NegotiationAbilityOffSet = 0f;
+        PsychicSensitivityOffSet = 0f;
+        SocialImpactOffSet = 0f;
+        ToxicResistanceOffSet = 0f;
+        ComfyTemperatureMinOffSet = 0f;
+        ComfyTemperatureMaxOffSet = 0f;
+        AimingDelayFactorOffSet = 0f;
+        ShootingAccuracyPawnOffSet = 0f;
+        MeleeDodgeChanceOffSet = 0f;
+        MeleeHitChanceOffSet = 0f;
+        ImmunityGainSpeedOffSet = 0f;
+        MedicalTendSpeedOffSet = 0f;
+        MedicalTendQualityOffSet = 0f;
+        MedicalOperationSpeedOffSet = 0f;
+        MedicalSurgerySuccessChanceOffSet = 0f;
+        AnimalGatherSpeedOffSet = 0f;
+        AnimalGatherYieldOffSet = 0f;
+        ConstructionSpeedOffSet = 0f;
+        ConstructSuccessChanceOffSet = 0f;
+        EatingSpeedOffSet = 0f;
+        HuntingStealthOffSet = 0f;
+        MiningSpeedOffSet = 0f;
+        PlantHarvestYieldOffSet = 0f;
+        PlantWorkSpeedOffSet = 0f;
+        ResearchSpeedOffSet = 0f;
+        SmoothingSpeedOffSet = 0f;
+        TameAnimalChanceOffSet = 0f;
+        TrainAnimalChanceOffSet = 0f;
+        WorkSpeedGlobalOffSet = 0f;
+        ButcheryFleshSpeedOffSet = 0f;
+        ButcheryMechanoidSpeedOffSet = 0f;
+        ButcheryFleshEfficiencyOffSet = 0f;
+        ButcheryMechanoidEfficiencyOffSet = 0f;
+        CookSpeedOffSet = 0f;
+        DrugCookingSpeedOffSet = 0f;
+        DrugSynthesisSpeedOffSet = 0f;
+        FixBrokenDownBuildingSuccessChanceOffSet = 0f;
+        SmeltingSpeedOffSet = 0f;
+        GeneralLaborSpeedOffSet = 0f;
     }
 
     internal void ProximityStatSet(Thing thing)
     {
         var proxQualFactor = ProxGlobals.GetProxQualFactor(thing);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMoveSpeedOffSet(thing.def), ref this.MoveSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxGlobalLearningFactorOffSet(thing.def), ref this.GlobalLearningFactorOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxNegotiationAbilityOffSet(thing.def), ref this.NegotiationAbilityOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxPsychicSensitivityOffSet(thing.def), ref this.PsychicSensitivityOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxSocialImpactOffSet(thing.def), ref this.SocialImpactOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxToxicResistanceOffSet(thing.def), ref this.ToxicResistanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxComfyTemperatureMinOffSet(thing.def), ref this.ComfyTemperatureMinOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxComfyTemperatureMaxOffSet(thing.def), ref this.ComfyTemperatureMaxOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxAimingDelayFactorOffSet(thing.def), ref this.AimingDelayFactorOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxShootingAccuracyPawnOffSet(thing.def), ref this.ShootingAccuracyPawnOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMeleeDodgeChanceOffSet(thing.def), ref this.MeleeDodgeChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMeleeHitChanceOffSet(thing.def), ref this.MeleeHitChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxImmunityGainSpeedOffSet(thing.def), ref this.ImmunityGainSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalTendSpeedOffSet(thing.def), ref this.MedicalTendSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalTendQualityOffSet(thing.def), ref this.MedicalTendQualityOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalOperationSpeedOffSet(thing.def), ref this.MedicalOperationSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalSurgerySuccessChanceOffSet(thing.def), ref this.MedicalSurgerySuccessChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxAnimalGatherSpeedOffSet(thing.def), ref this.AnimalGatherSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxAnimalGatherYieldOffSet(thing.def), ref this.AnimalGatherYieldOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxConstructionSpeedOffSet(thing.def), ref this.ConstructionSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxConstructSuccessChanceOffSet(thing.def), ref this.ConstructSuccessChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxEatingSpeedOffSet(thing.def), ref this.EatingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxHuntingStealthOffSet(thing.def), ref this.HuntingStealthOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxMiningSpeedOffSet(thing.def), ref this.MiningSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxPlantHarvestYieldOffSet(thing.def), ref this.PlantHarvestYieldOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxPlantWorkSpeedOffSet(thing.def), ref this.PlantWorkSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxResearchSpeedOffSet(thing.def), ref this.ResearchSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxSmoothingSpeedOffSet(thing.def), ref this.SmoothingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxTameAnimalChanceOffSet(thing.def), ref this.TameAnimalChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxTrainAnimalChanceOffSet(thing.def), ref this.TrainAnimalChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxWorkSpeedGlobalOffSet(thing.def), ref this.WorkSpeedGlobalOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryFleshSpeedOffSet(thing.def), ref this.ButcheryFleshSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryMechanoidSpeedOffSet(thing.def), ref this.ButcheryMechanoidSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryFleshEfficiencyOffSet(thing.def), ref this.ButcheryFleshEfficiencyOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryMechanoidEfficiencyOffSet(thing.def), ref this.ButcheryMechanoidEfficiencyOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxCookSpeedOffSet(thing.def), ref this.CookSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxDrugCookingSpeedOffSet(thing.def), ref this.DrugCookingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxDrugSynthesisSpeedOffSet(thing.def), ref this.DrugSynthesisSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxFixBrokenDownBuildingSuccessChanceOffSet(thing.def), ref this.FixBrokenDownBuildingSuccessChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxSmeltingSpeedOffSet(thing.def), ref this.SmeltingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetProxGeneralLaborSpeedOffSet(thing.def), ref this.GeneralLaborSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMoveSpeedOffSet(thing.def), ref MoveSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxGlobalLearningFactorOffSet(thing.def),
+            ref GlobalLearningFactorOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxNegotiationAbilityOffSet(thing.def),
+            ref NegotiationAbilityOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxPsychicSensitivityOffSet(thing.def),
+            ref PsychicSensitivityOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxSocialImpactOffSet(thing.def), ref SocialImpactOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxToxicResistanceOffSet(thing.def), ref ToxicResistanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxComfyTemperatureMinOffSet(thing.def),
+            ref ComfyTemperatureMinOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxComfyTemperatureMaxOffSet(thing.def),
+            ref ComfyTemperatureMaxOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxAimingDelayFactorOffSet(thing.def),
+            ref AimingDelayFactorOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxShootingAccuracyPawnOffSet(thing.def),
+            ref ShootingAccuracyPawnOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMeleeDodgeChanceOffSet(thing.def), ref MeleeDodgeChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMeleeHitChanceOffSet(thing.def), ref MeleeHitChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxImmunityGainSpeedOffSet(thing.def),
+            ref ImmunityGainSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalTendSpeedOffSet(thing.def), ref MedicalTendSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalTendQualityOffSet(thing.def),
+            ref MedicalTendQualityOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalOperationSpeedOffSet(thing.def),
+            ref MedicalOperationSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMedicalSurgerySuccessChanceOffSet(thing.def),
+            ref MedicalSurgerySuccessChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxAnimalGatherSpeedOffSet(thing.def),
+            ref AnimalGatherSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxAnimalGatherYieldOffSet(thing.def),
+            ref AnimalGatherYieldOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxConstructionSpeedOffSet(thing.def),
+            ref ConstructionSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxConstructSuccessChanceOffSet(thing.def),
+            ref ConstructSuccessChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxEatingSpeedOffSet(thing.def), ref EatingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxHuntingStealthOffSet(thing.def), ref HuntingStealthOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxMiningSpeedOffSet(thing.def), ref MiningSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxPlantHarvestYieldOffSet(thing.def),
+            ref PlantHarvestYieldOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxPlantWorkSpeedOffSet(thing.def), ref PlantWorkSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxResearchSpeedOffSet(thing.def), ref ResearchSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxSmoothingSpeedOffSet(thing.def), ref SmoothingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxTameAnimalChanceOffSet(thing.def), ref TameAnimalChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxTrainAnimalChanceOffSet(thing.def),
+            ref TrainAnimalChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxWorkSpeedGlobalOffSet(thing.def), ref WorkSpeedGlobalOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryFleshSpeedOffSet(thing.def),
+            ref ButcheryFleshSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryMechanoidSpeedOffSet(thing.def),
+            ref ButcheryMechanoidSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryFleshEfficiencyOffSet(thing.def),
+            ref ButcheryFleshEfficiencyOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxButcheryMechanoidEfficiencyOffSet(thing.def),
+            ref ButcheryMechanoidEfficiencyOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxCookSpeedOffSet(thing.def), ref CookSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxDrugCookingSpeedOffSet(thing.def), ref DrugCookingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxDrugSynthesisSpeedOffSet(thing.def),
+            ref DrugSynthesisSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxFixBrokenDownBuildingSuccessChanceOffSet(thing.def),
+            ref FixBrokenDownBuildingSuccessChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxSmeltingSpeedOffSet(thing.def), ref SmeltingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetProxGeneralLaborSpeedOffSet(thing.def),
+            ref GeneralLaborSpeedOffSet);
     }
+
     internal void ProximityTStatSet(TerrainDef terrain)
     {
         var proxQualFactor = 1f;
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMoveSpeedOffSet(terrain), ref this.MoveSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxGlobalLearningFactorOffSet(terrain), ref this.GlobalLearningFactorOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxNegotiationAbilityOffSet(terrain), ref this.NegotiationAbilityOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxPsychicSensitivityOffSet(terrain), ref this.PsychicSensitivityOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxSocialImpactOffSet(terrain), ref this.SocialImpactOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxToxicResistanceOffSet(terrain), ref this.ToxicResistanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxComfyTemperatureMinOffSet(terrain), ref this.ComfyTemperatureMinOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxComfyTemperatureMaxOffSet(terrain), ref this.ComfyTemperatureMaxOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxAimingDelayFactorOffSet(terrain), ref this.AimingDelayFactorOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxShootingAccuracyPawnOffSet(terrain), ref this.ShootingAccuracyPawnOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMeleeDodgeChanceOffSet(terrain), ref this.MeleeDodgeChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMeleeHitChanceOffSet(terrain), ref this.MeleeHitChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxImmunityGainSpeedOffSet(terrain), ref this.ImmunityGainSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalTendSpeedOffSet(terrain), ref this.MedicalTendSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalTendQualityOffSet(terrain), ref this.MedicalTendQualityOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalOperationSpeedOffSet(terrain), ref this.MedicalOperationSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalSurgerySuccessChanceOffSet(terrain), ref this.MedicalSurgerySuccessChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxAnimalGatherSpeedOffSet(terrain), ref this.AnimalGatherSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxAnimalGatherYieldOffSet(terrain), ref this.AnimalGatherYieldOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxConstructionSpeedOffSet(terrain), ref this.ConstructionSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxConstructSuccessChanceOffSet(terrain), ref this.ConstructSuccessChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxEatingSpeedOffSet(terrain), ref this.EatingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxHuntingStealthOffSet(terrain), ref this.HuntingStealthOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxMiningSpeedOffSet(terrain), ref this.MiningSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxPlantHarvestYieldOffSet(terrain), ref this.PlantHarvestYieldOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxPlantWorkSpeedOffSet(terrain), ref this.PlantWorkSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxResearchSpeedOffSet(terrain), ref this.ResearchSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxSmoothingSpeedOffSet(terrain), ref this.SmoothingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxTameAnimalChanceOffSet(terrain), ref this.TameAnimalChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxTrainAnimalChanceOffSet(terrain), ref this.TrainAnimalChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxWorkSpeedGlobalOffSet(terrain), ref this.WorkSpeedGlobalOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryFleshSpeedOffSet(terrain), ref this.ButcheryFleshSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryMechanoidSpeedOffSet(terrain), ref this.ButcheryMechanoidSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryFleshEfficiencyOffSet(terrain), ref this.ButcheryFleshEfficiencyOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryMechanoidEfficiencyOffSet(terrain), ref this.ButcheryMechanoidEfficiencyOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxCookSpeedOffSet(terrain), ref this.CookSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxDrugCookingSpeedOffSet(terrain), ref this.DrugCookingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxDrugSynthesisSpeedOffSet(terrain), ref this.DrugSynthesisSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxFixBrokenDownBuildingSuccessChanceOffSet(terrain), ref this.FixBrokenDownBuildingSuccessChanceOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxSmeltingSpeedOffSet(terrain), ref this.SmeltingSpeedOffSet);
-        TryAddValue(proxQualFactor, ProximityGet.GetTProxGeneralLaborSpeedOffSet(terrain), ref this.GeneralLaborSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMoveSpeedOffSet(terrain), ref MoveSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxGlobalLearningFactorOffSet(terrain),
+            ref GlobalLearningFactorOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxNegotiationAbilityOffSet(terrain),
+            ref NegotiationAbilityOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxPsychicSensitivityOffSet(terrain),
+            ref PsychicSensitivityOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxSocialImpactOffSet(terrain), ref SocialImpactOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxToxicResistanceOffSet(terrain), ref ToxicResistanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxComfyTemperatureMinOffSet(terrain),
+            ref ComfyTemperatureMinOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxComfyTemperatureMaxOffSet(terrain),
+            ref ComfyTemperatureMaxOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxAimingDelayFactorOffSet(terrain), ref AimingDelayFactorOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxShootingAccuracyPawnOffSet(terrain),
+            ref ShootingAccuracyPawnOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMeleeDodgeChanceOffSet(terrain), ref MeleeDodgeChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMeleeHitChanceOffSet(terrain), ref MeleeHitChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxImmunityGainSpeedOffSet(terrain), ref ImmunityGainSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalTendSpeedOffSet(terrain), ref MedicalTendSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalTendQualityOffSet(terrain),
+            ref MedicalTendQualityOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalOperationSpeedOffSet(terrain),
+            ref MedicalOperationSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMedicalSurgerySuccessChanceOffSet(terrain),
+            ref MedicalSurgerySuccessChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxAnimalGatherSpeedOffSet(terrain), ref AnimalGatherSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxAnimalGatherYieldOffSet(terrain), ref AnimalGatherYieldOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxConstructionSpeedOffSet(terrain), ref ConstructionSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxConstructSuccessChanceOffSet(terrain),
+            ref ConstructSuccessChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxEatingSpeedOffSet(terrain), ref EatingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxHuntingStealthOffSet(terrain), ref HuntingStealthOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxMiningSpeedOffSet(terrain), ref MiningSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxPlantHarvestYieldOffSet(terrain), ref PlantHarvestYieldOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxPlantWorkSpeedOffSet(terrain), ref PlantWorkSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxResearchSpeedOffSet(terrain), ref ResearchSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxSmoothingSpeedOffSet(terrain), ref SmoothingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxTameAnimalChanceOffSet(terrain), ref TameAnimalChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxTrainAnimalChanceOffSet(terrain), ref TrainAnimalChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxWorkSpeedGlobalOffSet(terrain), ref WorkSpeedGlobalOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryFleshSpeedOffSet(terrain),
+            ref ButcheryFleshSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryMechanoidSpeedOffSet(terrain),
+            ref ButcheryMechanoidSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryFleshEfficiencyOffSet(terrain),
+            ref ButcheryFleshEfficiencyOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxButcheryMechanoidEfficiencyOffSet(terrain),
+            ref ButcheryMechanoidEfficiencyOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxCookSpeedOffSet(terrain), ref CookSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxDrugCookingSpeedOffSet(terrain), ref DrugCookingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxDrugSynthesisSpeedOffSet(terrain),
+            ref DrugSynthesisSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxFixBrokenDownBuildingSuccessChanceOffSet(terrain),
+            ref FixBrokenDownBuildingSuccessChanceOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxSmeltingSpeedOffSet(terrain), ref SmeltingSpeedOffSet);
+        TryAddValue(proxQualFactor, ProximityGet.GetTProxGeneralLaborSpeedOffSet(terrain), ref GeneralLaborSpeedOffSet);
     }
 
     private void TryAddValue(float proxQualFactor, float value, ref float field)
@@ -363,6 +411,7 @@ public class ProximityData : ThingComp
             field += proxQualFactor * value;
         }
     }
+
     internal static float GetProxData(Thing thing, int num)
     {
         var result = 0f;
@@ -371,6 +420,7 @@ public class ProximityData : ThingComp
         {
             return result;
         }
+
         switch (num)
         {
             case 1:

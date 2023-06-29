@@ -1,14 +1,69 @@
-using RimWorld;
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace Proximity;
 
 internal class ProxGlobals
 {
-    internal static int closeRange = 10;
+    internal static readonly int closeRange = 10;
 
-    internal static int ProxSecondTick = 2;
+    internal static readonly int ProxSecondTick = 2;
+
+    private static List<ThingDef> _proximityThings;
+
+
+    private static HashSet<TerrainDef> _proximityTerrains;
+
+    public static List<ThingDef> ProximityThings
+    {
+        get
+        {
+            if (_proximityThings != null)
+            {
+                return _proximityThings;
+            }
+
+            _proximityThings = new List<ThingDef>();
+            foreach (var def in DefDatabase<ThingDef>.AllDefs)
+            {
+                if (def.thingClass == null || !typeof(Building).IsAssignableFrom(def.thingClass))
+                {
+                    continue;
+                }
+
+                if (def.HasModExtension<ProximityDefs>())
+                {
+                    _proximityThings.Add(def);
+                }
+            }
+
+            return _proximityThings;
+        }
+    }
+
+    public static HashSet<TerrainDef> ProximityTerrains
+    {
+        get
+        {
+            if (_proximityTerrains is not null)
+            {
+                return _proximityTerrains;
+            }
+
+            _proximityTerrains = new HashSet<TerrainDef>();
+            foreach (var terrain in DefDatabase<TerrainDef>.AllDefs)
+            {
+                if (terrain.HasModExtension<ProximityDefs>())
+                {
+                    _proximityTerrains.Add(terrain);
+                }
+            }
+
+            return _proximityTerrains;
+        }
+    }
+
     internal static int ExtendTicks()
     {
         var num = ProxSecondTick;
@@ -161,50 +216,6 @@ internal class ProxGlobals
         return terrainPosition.InHorDistOf(pawn.Position, EffRange);
     }
 
-    private static List<ThingDef> _proximityThings;
-    public static List<ThingDef> ProximityThings
-    {
-        get
-        {
-            if (_proximityThings == null)
-            {
-                _proximityThings = new List<ThingDef>();
-                foreach (var def in DefDatabase<ThingDef>.AllDefs)
-                {
-                    if (def.thingClass != null && typeof(Building).IsAssignableFrom(def.thingClass))
-                    {
-                        if (def.HasModExtension<ProximityDefs>())
-                        {
-                            _proximityThings.Add(def);
-                        }
-                    }
-                }
-            }
-            return _proximityThings;
-        }
-    }
-
-
-    private static HashSet<TerrainDef> _proximityTerrains;
-    public static HashSet<TerrainDef> ProximityTerrains
-    {
-        get
-        {
-            if (_proximityTerrains is null)
-            {
-                _proximityTerrains = new HashSet<TerrainDef>();
-                foreach (var terrain in DefDatabase<TerrainDef>.AllDefs)
-                {
-                    if (terrain.HasModExtension<ProximityDefs>())
-                    {
-                        _proximityTerrains.Add(terrain);
-                    }
-                }
-            }
-            return _proximityTerrains;
-        }
-    }
-
     internal static bool IsNearThingValid(Thing NearThing, Pawn pawn)
     {
         if (!ProximityGet.GetProxDisabled(NearThing.def))
@@ -230,12 +241,7 @@ internal class ProxGlobals
         }
 
         var compPowerTrader = NearThing.TryGetComp<CompPowerTrader>();
-        if (compPowerTrader is { PowerOn: false })
-        {
-            return false;
-        }
-
-        return true;
+        return compPowerTrader is not { PowerOn: false };
     }
 
     internal static bool NearThingEffects(Thing thing, Pawn pawn)
