@@ -9,7 +9,7 @@ public class ProximityData : ThingComp
     private static readonly Dictionary<IntVec3, List<IntVec3>> cachedRadialCellsAround =
         new Dictionary<IntVec3, List<IntVec3>>();
 
-    private static readonly List<Thing> thingsAround = new List<Thing>();
+    private static readonly List<Thing> thingsAround = [];
     public float AimingDelayFactorOffSet;
 
     public float AnimalGatherSpeedOffSet;

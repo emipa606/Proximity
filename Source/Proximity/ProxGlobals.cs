@@ -24,7 +24,7 @@ internal class ProxGlobals
                 return _proximityThings;
             }
 
-            _proximityThings = new List<ThingDef>();
+            _proximityThings = [];
             foreach (var def in DefDatabase<ThingDef>.AllDefs)
             {
                 if (def.thingClass == null || !typeof(Building).IsAssignableFrom(def.thingClass))
@@ -51,7 +51,7 @@ internal class ProxGlobals
                 return _proximityTerrains;
             }
 
-            _proximityTerrains = new HashSet<TerrainDef>();
+            _proximityTerrains = [];
             foreach (var terrain in DefDatabase<TerrainDef>.AllDefs)
             {
                 if (terrain.HasModExtension<ProximityDefs>())
