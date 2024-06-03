@@ -17,17 +17,17 @@ internal static class Proximity_Setup
         ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
         {
             var race = def.race;
-            return race is { IsFlesh: true };
+            return race is { IsFlesh: true } && !def.IsCorpse;
         });
         ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
         {
             var race = def.race;
-            return race is { Humanlike: true };
+            return race is { Humanlike: true } && !def.IsCorpse;
         });
         ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
         {
             var race = def.race;
-            return race is { Animal: true };
+            return race is { Animal: true } && !def.IsCorpse;
         });
         ProxSetup_Comp(typeof(CompProperties_ProxData), delegate(ThingDef def)
         {
