@@ -8,23 +8,23 @@ internal class ProxGlobals
 {
     internal static readonly int closeRange = 10;
 
-    internal static readonly int ProxSecondTick = 2;
+    private static readonly int proxSecondTick = 2;
 
-    private static List<ThingDef> _proximityThings;
+    private static List<ThingDef> proximityThings;
 
 
-    private static HashSet<TerrainDef> _proximityTerrains;
+    private static HashSet<TerrainDef> proximityTerrains;
 
     public static List<ThingDef> ProximityThings
     {
         get
         {
-            if (_proximityThings != null)
+            if (proximityThings != null)
             {
-                return _proximityThings;
+                return proximityThings;
             }
 
-            _proximityThings = [];
+            proximityThings = [];
             foreach (var def in DefDatabase<ThingDef>.AllDefs)
             {
                 if (def.thingClass == null || !typeof(Building).IsAssignableFrom(def.thingClass))
@@ -34,11 +34,11 @@ internal class ProxGlobals
 
                 if (def.HasModExtension<ProximityDefs>())
                 {
-                    _proximityThings.Add(def);
+                    proximityThings.Add(def);
                 }
             }
 
-            return _proximityThings;
+            return proximityThings;
         }
     }
 
@@ -46,27 +46,27 @@ internal class ProxGlobals
     {
         get
         {
-            if (_proximityTerrains is not null)
+            if (proximityTerrains is not null)
             {
-                return _proximityTerrains;
+                return proximityTerrains;
             }
 
-            _proximityTerrains = [];
+            proximityTerrains = [];
             foreach (var terrain in DefDatabase<TerrainDef>.AllDefs)
             {
                 if (terrain.HasModExtension<ProximityDefs>())
                 {
-                    _proximityTerrains.Add(terrain);
+                    proximityTerrains.Add(terrain);
                 }
             }
 
-            return _proximityTerrains;
+            return proximityTerrains;
         }
     }
 
     internal static int ExtendTicks()
     {
-        var num = ProxSecondTick;
+        var num = proxSecondTick;
         num = num < 2 ? 2 : num;
         var num2 = num * 15;
         num2 = num2 > 120 ? 120 : num2;
@@ -163,7 +163,7 @@ internal class ProxGlobals
         pawn.health.AddHediff(hediff3);
     }
 
-    internal static bool ProxImmuneTo(Pawn pawn, HediffDef def)
+    private static bool ProxImmuneTo(Pawn pawn, HediffDef def)
     {
         var hediffs = pawn.health.hediffSet.hediffs;
         foreach (var hediff in hediffs)
@@ -216,31 +216,31 @@ internal class ProxGlobals
         return terrainPosition.InHorDistOf(pawn.Position, EffRange);
     }
 
-    internal static bool IsNearThingValid(Thing NearThing, Pawn pawn)
+    internal static bool IsNearThingValid(Thing nearThing, Pawn pawn)
     {
-        if (!ProximityGet.GetProxDisabled(NearThing.def))
+        if (!ProximityGet.GetProxDisabled(nearThing.def))
         {
             return true;
         }
 
-        if (NearThing.IsBrokenDown() || NearThing.IsForbidden(pawn))
+        if (nearThing.IsBrokenDown() || nearThing.IsForbidden(pawn))
         {
             return false;
         }
 
-        var compFlickable = NearThing.TryGetComp<CompFlickable>();
+        var compFlickable = nearThing.TryGetComp<CompFlickable>();
         if (compFlickable is { SwitchIsOn: false })
         {
             return false;
         }
 
-        var compRefuelable = NearThing.TryGetComp<CompRefuelable>();
+        var compRefuelable = nearThing.TryGetComp<CompRefuelable>();
         if (compRefuelable is { HasFuel: false })
         {
             return false;
         }
 
-        var compPowerTrader = NearThing.TryGetComp<CompPowerTrader>();
+        var compPowerTrader = nearThing.TryGetComp<CompPowerTrader>();
         return compPowerTrader is not { PowerOn: false };
     }
 
@@ -258,14 +258,11 @@ internal class ProxGlobals
             }
         }
 
-        if (pawn is { IsColonist: true } && !ProximityGet.GetProxColonist(def))
+        switch (pawn)
         {
-            return false;
-        }
-
-        if (pawn is { Drafted: true } && !ProximityGet.GetProxDrafted(def))
-        {
-            return false;
+            case { IsColonist: true } when !ProximityGet.GetProxColonist(def):
+            case { Drafted: true } when !ProximityGet.GetProxDrafted(def):
+                return false;
         }
 
         if (!ProximityGet.GetProxComposMentis(def))
@@ -275,7 +272,7 @@ internal class ProxGlobals
                    (!pawn.AnimalOrWildMan() || ProximityGet.GetProxAnimal(def)) &&
                    (!pawn.IsPrisoner || ProximityGet.GetProxPrisoner(def)) &&
                    (pawn.Faction == thing.Faction || GetEffectsOutsider(thing, pawn)) &&
-                   (ProximityGet.GetProxEquipped(def) == null || GetPawnHasEquipment(thing, pawn));
+                   (ProximityGet.GetProxEquipped(def) == null || getPawnHasEquipment(thing, pawn));
         }
 
         if (pawn != null && (pawn.Downed || pawn.InMentalState || pawn.IsBurning() ||
@@ -294,7 +291,7 @@ internal class ProxGlobals
                (!pawn.AnimalOrWildMan() || ProximityGet.GetProxAnimal(def)) &&
                (!pawn.IsPrisoner || ProximityGet.GetProxPrisoner(def)) &&
                (pawn.Faction == thing.Faction || GetEffectsOutsider(thing, pawn)) &&
-               (ProximityGet.GetProxEquipped(def) == null || GetPawnHasEquipment(thing, pawn));
+               (ProximityGet.GetProxEquipped(def) == null || getPawnHasEquipment(thing, pawn));
     }
 
     internal static bool TerrainEffects(TerrainDef terrain, IntVec3 terrainPosition, Pawn pawn)
@@ -355,11 +352,11 @@ internal class ProxGlobals
 
         var faction = pawn.Faction;
         var map = pawn.Map;
-        return (faction == map?.ParentFaction || GetTerrainEffectsOutsider(terrain, pawn)) &&
+        return (faction == map?.ParentFaction || getTerrainEffectsOutsider(terrain, pawn)) &&
                (ProximityGet.GetTProxEquipped(terrain) == null || GetTerrainPawnHasEquipment(terrain, pawn));
     }
 
-    internal static bool GetPawnHasEquipment(Thing thing, Pawn pawn)
+    private static bool getPawnHasEquipment(Thing thing, Pawn pawn)
     {
         var proxEquipped = ProximityGet.GetProxEquipped(thing.def);
         if (proxEquipped.Count <= 0)
@@ -393,7 +390,7 @@ internal class ProxGlobals
         return false;
     }
 
-    internal static bool GetTerrainPawnHasEquipment(TerrainDef terrain, Pawn pawn)
+    private static bool GetTerrainPawnHasEquipment(TerrainDef terrain, Pawn pawn)
     {
         var tproxEquipped = ProximityGet.GetTProxEquipped(terrain);
         if (tproxEquipped.Count <= 0)
@@ -427,7 +424,7 @@ internal class ProxGlobals
         return false;
     }
 
-    internal static bool GetEffectsOutsider(Thing thing, Pawn pawn)
+    private static bool GetEffectsOutsider(Thing thing, Pawn pawn)
     {
         if (ProximityGet.GetProxOutsider(thing.def))
         {
@@ -462,7 +459,7 @@ internal class ProxGlobals
         return false;
     }
 
-    internal static bool GetTerrainEffectsOutsider(TerrainDef terrain, Pawn pawn)
+    private static bool getTerrainEffectsOutsider(TerrainDef terrain, Pawn pawn)
     {
         if (ProximityGet.GetTProxOutsider(terrain))
         {

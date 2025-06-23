@@ -7,9 +7,9 @@ using RimWorld;
 namespace Proximity;
 
 [HarmonyPatch(typeof(StatWorker), "GetValueUnfinalized")]
-public static class StatWorker_GetValueUnfinalized_Patch
+public static class StatWorker_GetValueUnfinalized
 {
-    public static readonly Dictionary<StatDef, int> proximityStats = new Dictionary<StatDef, int>
+    private static readonly Dictionary<StatDef, int> proximityStats = new()
     {
         { StatDefOf.MoveSpeed, 1 },
         { StatDefOf.GlobalLearningFactor, 2 },
@@ -59,7 +59,7 @@ public static class StatWorker_GetValueUnfinalized_Patch
     {
         var codes = codeInstructions.ToList();
         var statField = AccessTools.Field(typeof(StatWorker), "stat");
-        var setOffsets = AccessTools.Method(typeof(StatWorker_GetValueUnfinalized_Patch), "SetOffsets");
+        var setOffsets = AccessTools.Method(typeof(StatWorker_GetValueUnfinalized), nameof(SetOffsets));
         var patched = false;
         for (var i = 0; i < codes.Count; i++)
         {
