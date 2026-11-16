@@ -32,9 +32,9 @@ public class ProximityDefs : DefModExtension
 
     public bool ProxComposMentis;
 
-    public float ProxConstructionSpeedOffSet;
-
     public float ProxConstructSuccessChanceOffSet;
+
+    public float ProxConstructionSpeedOffSet;
 
     public float ProxCookSpeedOffSet;
 
@@ -51,10 +51,6 @@ public class ProximityDefs : DefModExtension
     public List<string> ProxEquipped;
 
     public float ProxFixBrokenDownBuildingSuccessChanceOffSet;
-
-    //public float ProxSmithingSpeedOffSet;
-
-    //public float ProxTailoringSpeedOffSet;
 
     public float ProxGeneralLaborSpeedOffSet;
 
@@ -111,8 +107,6 @@ public class ProximityDefs : DefModExtension
     public bool ProxRoomOnly;
 
     public float ProxShootingAccuracyPawnOffSet;
-
-    //public float ProxSculptingSpeedOffSet;
 
     public float ProxSmeltingSpeedOffSet;
 

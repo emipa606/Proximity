@@ -1,30 +1,27 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
 namespace Proximity;
 
-internal class ProxGlobals
+internal static class ProxGlobals
 {
     internal static readonly int closeRange = 10;
 
     private static readonly int proxSecondTick = 2;
 
-    private static List<ThingDef> proximityThings;
-
-
-    private static HashSet<TerrainDef> proximityTerrains;
 
     public static List<ThingDef> ProximityThings
     {
         get
         {
-            if (proximityThings != null)
+            if (field != null)
             {
-                return proximityThings;
+                return field;
             }
 
-            proximityThings = [];
+            field = [];
             foreach (var def in DefDatabase<ThingDef>.AllDefs)
             {
                 if (def.thingClass == null || !typeof(Building).IsAssignableFrom(def.thingClass))
@@ -34,11 +31,11 @@ internal class ProxGlobals
 
                 if (def.HasModExtension<ProximityDefs>())
                 {
-                    proximityThings.Add(def);
+                    field.Add(def);
                 }
             }
 
-            return proximityThings;
+            return field;
         }
     }
 
@@ -46,21 +43,18 @@ internal class ProxGlobals
     {
         get
         {
-            if (proximityTerrains is not null)
+            if (field is not null)
             {
-                return proximityTerrains;
+                return field;
             }
 
-            proximityTerrains = [];
-            foreach (var terrain in DefDatabase<TerrainDef>.AllDefs)
+            field = [];
+            foreach (var terrain in DefDatabase<TerrainDef>.AllDefs.Where(t => t.HasModExtension<ProximityDefs>()))
             {
-                if (terrain.HasModExtension<ProximityDefs>())
-                {
-                    proximityTerrains.Add(terrain);
-                }
+                field.Add(terrain);
             }
 
-            return proximityTerrains;
+            return field;
         }
     }
 
@@ -166,20 +160,16 @@ internal class ProxGlobals
     private static bool ProxImmuneTo(Pawn pawn, HediffDef def)
     {
         var hediffs = pawn.health.hediffSet.hediffs;
-        foreach (var hediff in hediffs)
+        foreach (var curStage in hediffs.Select(h => h.CurStage))
         {
-            var curStage = hediff.CurStage;
             if (curStage?.makeImmuneTo == null)
             {
                 continue;
             }
 
-            foreach (var hediffDef in curStage.makeImmuneTo)
+            if (curStage.makeImmuneTo.Any(stage => stage == def))
             {
-                if (hediffDef == def)
-                {
-                    return true;
-                }
+                return true;
             }
         }
 

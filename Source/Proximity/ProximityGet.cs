@@ -3,7 +3,7 @@ using Verse;
 
 namespace Proximity;
 
-public class ProximityGet
+public static class ProximityGet
 {
     public static float GetProxMoveSpeedOffSet(ThingDef thingdef)
     {

@@ -27,9 +27,9 @@ public class ProximityData : ThingComp
 
     private float comfyTemperatureMinOffSet;
 
-    private float constructionSpeedOffSet;
-
     private float constructSuccessChanceOffSet;
+
+    private float constructionSpeedOffSet;
 
     private float cookSpeedOffSet;
 
@@ -67,8 +67,6 @@ public class ProximityData : ThingComp
 
     private float negotiationAbilityOffSet;
 
-    private Pawn pawn;
-
     private float plantHarvestYieldOffSet;
 
     private float plantWorkSpeedOffSet;
@@ -80,8 +78,6 @@ public class ProximityData : ThingComp
     private float researchSpeedOffSet;
 
     private float shootingAccuracyPawnOffSet;
-
-    //public float SculptingSpeedOffSet;
 
     private float smeltingSpeedOffSet;
 
@@ -101,9 +97,9 @@ public class ProximityData : ThingComp
     {
         get
         {
-            pawn ??= (Pawn)parent;
+            field ??= (Pawn)parent;
 
-            return pawn;
+            return field;
         }
     }
 
@@ -410,11 +406,10 @@ public class ProximityData : ThingComp
 
     internal static float GetProxData(Thing thing, int num)
     {
-        var result = 0f;
         var proximityData = thing?.TryGetComp<ProximityData>();
         if (proximityData == null)
         {
-            return result;
+            return 0f;
         }
 
         switch (num)
@@ -503,8 +498,6 @@ public class ProximityData : ThingComp
                 return proximityData.generalLaborSpeedOffSet;
         }
 
-        result = 0f;
-
-        return result;
+        return 0f;
     }
 }

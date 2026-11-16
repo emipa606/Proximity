@@ -52,12 +52,10 @@ internal static class Proximity_Setup
         //IL_0082: Expected O, but got Unknown
         var list = DefDatabase<ThingDef>.AllDefsListForReading.Where(qualifier).ToList();
         list.RemoveDuplicates();
-        foreach (var item in list)
+        foreach (var comps in list.Where(x => x.comps != null && !x.comps.Any(c => c.GetType() == compType))
+                     .Select(x => x.comps))
         {
-            if (item.comps != null && !item.comps.Any(c => c.GetType() == compType))
-            {
-                item.comps.Add((CompProperties)Activator.CreateInstance(compType));
-            }
+            comps.Add((CompProperties)Activator.CreateInstance(compType));
         }
     }
 }
